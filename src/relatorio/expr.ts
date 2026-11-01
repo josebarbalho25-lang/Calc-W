@@ -24,7 +24,10 @@ export function exprHtml(e: Expr): string {
     case 'fr':
       return `<span class="frac"><span>${exprHtml(e.num)}</span><span>${exprHtml(e.den)}</span></span>`;
     case 'rz':
-      return `√<span class="raiz">${exprHtml(e.x)}</span>`;
+      // O sinal é desenho, não letra: o "√" de fonte tem altura fixa, e o
+      // traço de cima, sendo borda de texto, ficava na altura da letra —
+      // cortava a fração lá dentro. Assim os dois esticam com o conteúdo.
+      return `<span class="rad"><span class="rad-sinal"><svg viewBox="0 0 10 24" preserveAspectRatio="none" aria-hidden="true"><path d="M0 13.5 L2.4 12 L5.4 24 L10 0" vector-effect="non-scaling-stroke"/></svg></span><span class="raiz">${exprHtml(e.x)}</span></span>`;
     case 'pot':
       return `${exprHtml(e.base)}<sup>${exprHtml(e.exp)}</sup>`;
     case 'par':

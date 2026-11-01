@@ -442,9 +442,38 @@
 .janela-didatica .frac > span:last-child {
   padding: 0.1em 0.25em 0;
 }
+/* A raiz é o sinal desenhado (expr.ts) ao lado do conteúdo: os dois esticam
+   juntos, e o traço de cima passa por cima da fração inteira. */
+.card-corpo .rad {
+  --traco-raiz: 1px;
+  display: inline-flex;
+  align-items: stretch;
+  vertical-align: middle;
+  line-height: 1.25;
+  margin-left: 0.05em;
+}
+.card-corpo .rad-sinal {
+  position: relative;
+  flex: none;
+  width: 0.6em;
+}
+.card-corpo .rad-sinal svg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: calc(var(--traco-raiz) / 2);
+  width: 100%;
+  height: calc(100% - var(--traco-raiz) / 2);
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--traco-raiz);
+  stroke-linejoin: round;
+}
 .card-corpo .raiz {
-  border-top: 1px solid currentColor;
-  padding: 0.05em 0.1em 0 0.15em;
+  border-top: var(--traco-raiz) solid currentColor;
+  padding: 0.12em 0.1em 0 0.12em;
 }
 .card-corpo .nota-tab {
   font-size: var(--fs-nota);

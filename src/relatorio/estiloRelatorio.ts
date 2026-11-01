@@ -95,7 +95,11 @@ h3 { font: 600 9.8pt/1.3 "Sans"; margin: 0 0 2.4mm; break-after: avoid; }
 .frac { display: inline-flex; flex-direction: column; text-align: center; vertical-align: middle; line-height: 1.25; }
 .frac > span:first-child { border-bottom: 0.55pt solid currentColor; padding: 0 0.25em 0.12em; }
 .frac > span:last-child { padding: 0.12em 0.25em 0; }
-.raiz { border-top: 0.55pt solid currentColor; padding: 0.05em 0.1em 0 0.15em; margin-left: 0.05em; }
+.rad { --traco-raiz: 0.55pt; display: inline-flex; align-items: stretch; vertical-align: middle; line-height: 1.25; margin-left: 0.05em; }
+.rad-sinal { position: relative; flex: none; width: 0.6em; }
+.rad-sinal svg { position: absolute; left: 0; right: 0; bottom: 0; top: calc(var(--traco-raiz) / 2); width: 100%; height: calc(100% - var(--traco-raiz) / 2);
+  overflow: visible; fill: none; stroke: currentColor; stroke-width: var(--traco-raiz); stroke-linejoin: round; }
+.raiz { border-top: var(--traco-raiz) solid currentColor; padding: 0.12em 0.1em 0 0.12em; }
 .indice { display: grid; grid-template-columns: 1fr 1fr; column-gap: 10mm; row-gap: 1.2mm; margin: 3mm 0 0;
   font-size: 8.8pt; color: var(--grafite); }
 .indice-titulo { font: 13pt "Serif Sub", serif; margin: 7mm 0 0; }
