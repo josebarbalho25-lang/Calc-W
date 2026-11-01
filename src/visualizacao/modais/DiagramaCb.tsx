@@ -94,6 +94,7 @@ export function DiagramaCb({ forma, psi }: Props) {
     xiMax = i / 200;
     break;
   }
+  const aEsquerda = xiMax > 0.8 || [0.25, 0.5, 0.75].some((m) => Math.abs(xiMax - m) < 1e-9);
 
   return (
     <svg className="diagrama-cb" viewBox={`0 0 ${W} ${H}`} width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
@@ -129,7 +130,15 @@ export function DiagramaCb({ forma, psi }: Props) {
         );
       })}
       <circle cx={xs(xiMax)} cy={yEixo + momentoNoTrecho(forma, psi, xiMax) * escala * fase} r={5.5} className="cb-max" />
-      <text x={xs(xiMax) + (xiMax > 0.8 ? -8 : 8)} y={yEixo - 14} className="cb-rotulo max" textAnchor={xiMax > 0.8 ? 'end' : 'start'}>
+      {/* O rótulo do Mmáx ao lado do próprio ponto. Quando o máximo cai numa
+          das seções A, B ou C (distribuída, concentrada), o rótulo dela já
+          está à direita: o do Mmáx vai para a esquerda. */}
+      <text
+        x={xs(xiMax) + (aEsquerda ? -12 : 12)}
+        y={yEixo + momentoNoTrecho(forma, psi, xiMax) * escala * fase + 22}
+        className="cb-rotulo max"
+        textAnchor={aEsquerda ? 'end' : 'start'}
+      >
         M<tspan dy={3} fontSize="10">máx</tspan>
         <tspan dy={-3}> = {num(c.Mmax, 2)}</tspan>
       </text>

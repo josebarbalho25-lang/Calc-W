@@ -177,7 +177,9 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
         {forma === 'pontas' && (
           <div className="cad-linha">
             <label>
-              ψ = {s('M', '2')}/{s('M', '1')}
+              <span>
+                ψ = {s('M', '2')}/{s('M', '1')}
+              </span>
             </label>
             <div className="cad-valor">
               <input type="range" min={-1} max={1} step={0.05} value={psi} onChange={(e) => setPsi(Number(e.target.value))} />
