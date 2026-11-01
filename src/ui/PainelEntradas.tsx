@@ -1,6 +1,12 @@
 // ═══════════════════════════════════════════════════════════════════════════
 //  ui/PainelEntradas.tsx — a coluna da esquerda: perfil, aço, esforços e
-//  comprimentos. Rótulo, valor, unidade; o (?) abre a janela do comprimento.
+//  comprimentos. Rótulo, valor, unidade; o (?) abre a janela animada do
+//  esforço ou do comprimento.
+//
+//  ⚠️ O NOME DO SAP AO LADO DE CADA ESFORÇO (M3, V2…): o eixo forte aqui é o
+//  X, e no SAP o momento dele é o M3 e a cortante que vai junto é a V2. Foi
+//  nessa passagem que o eixo trocou três vezes na mesma tarde, com engenheiro
+//  atento conferindo. No N, "−P": no SAP a tração é positiva.
 // ═══════════════════════════════════════════════════════════════════════════
 
 import { ACOS } from '../motor/catalogos/acos';
@@ -36,6 +42,16 @@ const sub = (base: string, indice: string) => (
     <i>{base}</i>
     <sub>{indice}</sub>
   </span>
+);
+
+/** O rótulo do esforço com o nome que ele tem no SAP2000. */
+const comSap = (base: string, indice: string, sap: string) => (
+  <>
+    {sub(base, indice)}
+    <span className="sap" title={`No SAP2000: ${sap}`}>
+      {sap}
+    </span>
+  </>
 );
 
 export function PainelEntradas({ estado, mudar, abrirAjuda }: Props) {
@@ -79,11 +95,11 @@ export function PainelEntradas({ estado, mudar, abrirAjuda }: Props) {
 
       <fieldset className="cad-bloco">
         <legend>Esforços solicitantes de cálculo</legend>
-        <CampoNumero rotulo={sub('N', 'Sd')} valor={f.N} unidade="kN" aoMudar={esforco('N')} titulo="Positivo comprime, negativo traciona" />
-        <CampoNumero rotulo={sub('M', 'x,Sd')} valor={f.Mx} unidade="kN·cm" aoMudar={esforco('Mx')} />
-        <CampoNumero rotulo={sub('M', 'y,Sd')} valor={f.My} unidade="kN·cm" aoMudar={esforco('My')} />
-        <CampoNumero rotulo={sub('V', 'x,Sd')} valor={f.Vx} unidade="kN" aoMudar={esforco('Vx')} />
-        <CampoNumero rotulo={sub('V', 'y,Sd')} valor={f.Vy} unidade="kN" aoMudar={esforco('Vy')} />
+        <CampoNumero rotulo={comSap('N', 'Sd', '−P')} valor={f.N} unidade="kN" aoMudar={esforco('N')} ajuda={<Ajuda chave="N" abrir={abrirAjuda} />} titulo="Positivo comprime, negativo traciona" />
+        <CampoNumero rotulo={comSap('M', 'x,Sd', 'M3')} valor={f.Mx} unidade="kN·cm" aoMudar={esforco('Mx')} ajuda={<Ajuda chave="Mx" abrir={abrirAjuda} />} />
+        <CampoNumero rotulo={comSap('M', 'y,Sd', 'M2')} valor={f.My} unidade="kN·cm" aoMudar={esforco('My')} ajuda={<Ajuda chave="My" abrir={abrirAjuda} />} />
+        <CampoNumero rotulo={comSap('V', 'x,Sd', 'V3')} valor={f.Vx} unidade="kN" aoMudar={esforco('Vx')} ajuda={<Ajuda chave="Vx" abrir={abrirAjuda} />} />
+        <CampoNumero rotulo={comSap('V', 'y,Sd', 'V2')} valor={f.Vy} unidade="kN" aoMudar={esforco('Vy')} ajuda={<Ajuda chave="Vy" abrir={abrirAjuda} />} />
       </fieldset>
 
       <fieldset className="cad-bloco">

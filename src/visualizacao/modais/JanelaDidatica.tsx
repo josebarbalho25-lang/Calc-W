@@ -1,10 +1,14 @@
 // ═══════════════════════════════════════════════════════════════════════════
-//  visualizacao/modais/JanelaDidatica.tsx — a janela do (?) dos comprimentos
+//  visualizacao/modais/JanelaDidatica.tsx — a janela do (?)
 // ---------------------------------------------------------------------------
-//  Uma janela, cinco abas (Lx, Ly, Lt, Cb, a): o palco à esquerda, os números
-//  da barra que está na tela à direita. Sem texto corrido — a animação diz o
-//  que o comprimento é, os rótulos dizem onde ele mora, e os números são os
-//  da verificação aberta.
+//  Uma janela, duas famílias de abas: a dos comprimentos (Lx, Ly, Lt, Cb, a)
+//  e a dos esforços (N, Mx, My, Vx, Vy) — o (?) de cada campo abre a família
+//  dele. O palco à esquerda, os números da barra que está na tela à direita.
+//  Sem texto corrido — a animação diz o que é, os rótulos dizem onde mora, e
+//  os números são os da verificação aberta.
+//
+//  Nos esforços, o lado mostra o nome do SAP2000 (M3, V2…): é na passagem do
+//  SAP para cá que o eixo troca.
 //
 //  Carrega sob demanda (App.tsx): o three.js só vem quando a janela abre.
 // ═══════════════════════════════════════════════════════════════════════════
@@ -12,11 +16,13 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { ResultadoDaVerificacao } from '../../motor';
 import { num, numExato } from '../../relatorio/formatos';
+import { CenaEsforco3D } from '../CenaEsforco3D';
 import { CenaFlambagem3D } from '../CenaFlambagem3D';
+import type { Esforco } from '../deformadaDoEsforco';
 import { cbDoDiagrama, DiagramaCb, type FormaDoDiagrama } from './DiagramaCb';
 import { PainelCisalhamento } from './PainelCisalhamento';
 
-export type ChaveDaAjuda = 'Lx' | 'Ly' | 'Lt' | 'Cb' | 'a';
+export type ChaveDaAjuda = 'Lx' | 'Ly' | 'Lt' | 'Cb' | 'a' | Esforco;
 
 interface Props {
   chave: ChaveDaAjuda;
@@ -26,13 +32,20 @@ interface Props {
   usarCb: (Cb: number) => void;
 }
 
-const ABAS: ChaveDaAjuda[] = ['Lx', 'Ly', 'Lt', 'Cb', 'a'];
+const COMPRIMENTOS: ChaveDaAjuda[] = ['Lx', 'Ly', 'Lt', 'Cb', 'a'];
+const ESFORCOS: Esforco[] = ['N', 'Mx', 'My', 'Vx', 'Vy'];
+const eEsforco = (c: ChaveDaAjuda): c is Esforco => (ESFORCOS as string[]).includes(c);
 const TITULO: Record<ChaveDaAjuda, string> = {
   Lx: 'Flambagem por flexão em torno de X',
   Ly: 'Flambagem por flexão em torno de Y',
   Lt: 'Flambagem lateral com torção',
   Cb: 'Fator de momento não uniforme',
   a: 'Enrijecedores transversais da alma',
+  N: 'Força axial',
+  Mx: 'Momento fletor em torno de X',
+  My: 'Momento fletor em torno de Y',
+  Vx: 'Força cortante na direção X',
+  Vy: 'Força cortante na direção Y',
 };
 
 function Dado({ rotulo, valor, unidade }: { rotulo: ReactNode; valor: string; unidade?: string }) {
@@ -79,6 +92,7 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
   const [forma, setForma] = useState<FormaDoDiagrama>('distribuida');
   const [psi, setPsi] = useState(0);
   const [comEnrij, setComEnrij] = useState(L.a > 0);
+  const [compressao, setCompressao] = useState(r.entrada.esforcos.N >= 0);
   const cb = useMemo(() => cbDoDiagrama(forma, psi), [forma, psi]);
 
   useEffect(() => {
@@ -95,7 +109,60 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
   let palco: ReactNode;
   let controles: ReactNode = null;
   let dados: ReactNode;
-  if (chave === 'Lx' || chave === 'Ly') {
+  if (eEsforco(chave)) {
+    const f = r.entrada.esforcos;
+    const razao = (sd: number, rd: number) => num(Math.abs(sd) / rd, 3);
+    palco = <CenaEsforco3D key={chave} perfil={p} esforco={chave} compressao={compressao} />;
+    if (chave === 'N') {
+      controles = (
+        <Seg
+          opcoes={[
+            [true, 'Positivo · compressão'],
+            [false, 'Negativo · tração'],
+          ]}
+          valor={compressao}
+          mudar={setCompressao}
+        />
+      );
+      const NRd = f.N >= 0 ? r.compressao.NcRd : r.tracao.NtRd;
+      dados = (
+        <>
+          <Dado rotulo={s('N', 'Sd')} valor={num(f.N, 2)} unidade="kN" />
+          <Dado rotulo="SAP2000" valor="−P" />
+          <Dado rotulo={f.N >= 0 ? s('N', 'c,Rd') : s('N', 't,Rd')} valor={num(NRd, 1)} unidade="kN" />
+          <Dado rotulo={<>{s('N', 'Sd')}/{s('N', 'Rd')}</>} valor={razao(f.N, NRd)} />
+        </>
+      );
+    } else if (chave === 'Mx' || chave === 'My') {
+      const emX = chave === 'Mx';
+      const e = emX ? 'x' : 'y';
+      const MRd = emX ? r.flexaoX.MRd : r.flexaoY.MRd;
+      const MSd = emX ? f.Mx : f.My;
+      dados = (
+        <>
+          <Dado rotulo={s('M', `${e},Sd`)} valor={num(MSd, 1)} unidade="kN·cm" />
+          <Dado rotulo="SAP2000" valor={emX ? 'M3 · Major' : 'M2 · Minor'} />
+          <Dado rotulo={s('I', e)} valor={num(emX ? p.Ix : p.Iy, 0)} unidade="cm⁴" />
+          <Dado rotulo={s('M', `${e},Rd`)} valor={num(MRd, 1)} unidade="kN·cm" />
+          <Dado rotulo={<>{s('M', `${e},Sd`)}/{s('M', `${e},Rd`)}</>} valor={razao(MSd, MRd)} />
+        </>
+      );
+    } else {
+      const emY = chave === 'Vy';
+      const e = emY ? 'y' : 'x';
+      const c = emY ? r.cortanteY.chapa : r.cortanteX.chapa;
+      const VSd = emY ? f.Vy : f.Vx;
+      dados = (
+        <>
+          <Dado rotulo={s('V', `${e},Sd`)} valor={num(VSd, 2)} unidade="kN" />
+          <Dado rotulo="SAP2000" valor={emY ? 'V2 · Major' : 'V3 · Minor'} />
+          <Dado rotulo={s('A', 'w')} valor={num(c.Aw, 2)} unidade="cm²" />
+          <Dado rotulo={s('V', `${e},Rd`)} valor={num(c.VRd, 1)} unidade="kN" />
+          <Dado rotulo={<>{s('V', `${e},Sd`)}/{s('V', `${e},Rd`)}</>} valor={razao(VSd, c.VRd)} />
+        </>
+      );
+    }
+  } else if (chave === 'Lx' || chave === 'Ly') {
     const eixo = chave === 'Lx' ? 'x' : 'y';
     const rr = eixo === 'x' ? r.secao.rx : r.secao.ry;
     const LL = eixo === 'x' ? L.Lx : L.Ly;
@@ -240,12 +307,12 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
       <div className="modal-caixa janela-didatica" role="dialog" aria-label={TITULO[chave]}>
         <div className="modal-cabeca">
           <h3>{TITULO[chave]}</h3>
-          <Seg opcoes={ABAS.map((a) => [a, a] as [ChaveDaAjuda, string])} valor={chave} mudar={trocar} />
+          <Seg opcoes={(eEsforco(chave) ? ESFORCOS : COMPRIMENTOS).map((a) => [a, a] as [ChaveDaAjuda, string])} valor={chave} mudar={trocar} />
           <button type="button" className="btn-icone" onClick={fechar} aria-label="Fechar" title="Fechar (Esc)">
             ✕
           </button>
         </div>
-        <div className="didatica-abas">{controles}</div>
+        {controles && <div className="didatica-abas">{controles}</div>}
         <div className="didatica-corpo">
           <div className="didatica-palco">{palco}</div>
           <div className="didatica-lado">
