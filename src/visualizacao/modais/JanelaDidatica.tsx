@@ -7,9 +7,6 @@
 //  Sem texto corrido — a animação diz o que é, os rótulos dizem onde mora, e
 //  os números são os da verificação aberta.
 //
-//  Nos esforços, o lado mostra o nome do SAP2000 (M3, V2…): é na passagem do
-//  SAP para cá que o eixo troca.
-//
 //  Carrega sob demanda (App.tsx): o three.js só vem quando a janela abre.
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -128,7 +125,6 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
       dados = (
         <>
           <Dado rotulo={s('N', 'Sd')} valor={num(f.N, 2)} unidade="kN" />
-          <Dado rotulo="SAP2000" valor="−P" />
           <Dado rotulo={f.N >= 0 ? s('N', 'c,Rd') : s('N', 't,Rd')} valor={num(NRd, 1)} unidade="kN" />
           <Dado rotulo={<>{s('N', 'Sd')}/{s('N', 'Rd')}</>} valor={razao(f.N, NRd)} />
         </>
@@ -141,7 +137,6 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
       dados = (
         <>
           <Dado rotulo={s('M', `${e},Sd`)} valor={num(MSd, 1)} unidade="kN·cm" />
-          <Dado rotulo="SAP2000" valor={emX ? 'M3 · Major' : 'M2 · Minor'} />
           <Dado rotulo={s('I', e)} valor={num(emX ? p.Ix : p.Iy, 0)} unidade="cm⁴" />
           <Dado rotulo={s('M', `${e},Rd`)} valor={num(MRd, 1)} unidade="kN·cm" />
           <Dado rotulo={<>{s('M', `${e},Sd`)}/{s('M', `${e},Rd`)}</>} valor={razao(MSd, MRd)} />
@@ -155,7 +150,6 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
       dados = (
         <>
           <Dado rotulo={s('V', `${e},Sd`)} valor={num(VSd, 2)} unidade="kN" />
-          <Dado rotulo="SAP2000" valor={emY ? 'V2 · Major' : 'V3 · Minor'} />
           <Dado rotulo={s('A', 'w')} valor={num(c.Aw, 2)} unidade="cm²" />
           <Dado rotulo={s('V', `${e},Rd`)} valor={num(c.VRd, 1)} unidade="kN" />
           <Dado rotulo={<>{s('V', `${e},Sd`)}/{s('V', `${e},Rd`)}</>} valor={razao(VSd, c.VRd)} />

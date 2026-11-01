@@ -107,13 +107,6 @@
   align-items: center;
   gap: 6px;
 }
-/* O nome do esforço no SAP2000, miúdo, ao lado do símbolo. */
-.cad-linha .sap {
-  margin-left: 8px;
-  font: 10px var(--font-mono);
-  color: var(--muted);
-  font-style: normal;
-}
 .btn-ajuda {
   width: 16px;
   height: 16px;
