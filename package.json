@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Verificação de perfis I laminados pela NBR 8800:2024 — módulo do A-PORT",
+  "author": "José Barbalho",
+  "license": "MIT",
+  "repository": "https://github.com/josebarbalho25-lang/Calc-W",
   "engines": {
     "node": ">=20.19"
   },

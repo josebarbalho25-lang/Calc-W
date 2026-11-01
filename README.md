@@ -36,6 +36,15 @@ Para fechar, feche a janela preta do `ABRIR.bat`.
 Esforços em kN e kN·cm; comprimentos em cm. **N positivo comprime**, negativo traciona.
 Comprimento zero = barra travada continuamente naquela direção.
 
+## Licença e citação
+
+Licença [MIT](LICENSE): uso, cópia, modificação e redistribuição livres, **desde que o
+autor seja citado**. Ao usar ou adaptar o código, mantenha a nota de autoria e cite:
+
+> Barbalho, José. *Calculadora NBR 8800 — perfis W e HP*. 2026.
+> https://github.com/josebarbalho25-lang/Calc-W
+
 ---
 
-© 2026 José Barbalho. Uso gratuito, nos termos do [termo de responsabilidade](TERMO-DE-RESPONSABILIDADE.md).
+© 2026 José Barbalho. Uso nos termos do [termo de responsabilidade](TERMO-DE-RESPONSABILIDADE.md)
+e da [licença](LICENSE).

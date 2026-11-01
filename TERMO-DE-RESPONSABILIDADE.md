@@ -58,6 +58,9 @@ programa ou de seus resultados.
 - As propriedades dos perfis vêm das tabelas publicadas pelo fabricante (Gerdau, Tabela de
   Bitolas, 11/2018). Confira com o catálogo vigente do seu fornecedor.
 
-## 7. Direitos
+## 7. Direitos e citação
 
-O uso é gratuito. Os direitos sobre o programa pertencem ao autor, José Barbalho.
+O programa é de **José Barbalho** e é distribuído sob a licença MIT (arquivo `LICENSE`):
+pode ser usado, copiado, modificado e redistribuído gratuitamente, **desde que o nome do
+autor seja citado** — a nota de autoria e a licença devem acompanhar qualquer cópia ou
+trabalho derivado do código.
