@@ -2,7 +2,7 @@
 //  relatorio/paginaDaMemoria.ts — a memória inteira, num HTML só
 // ---------------------------------------------------------------------------
 //  Capa (título, ficha, resumo, ressalvas, índice e carimbo), premissas, um
-//  capítulo por verificação e as conclusões. A saída é a página inteira: a
+//  capítulo por verificação, as conclusões e o glossário. A saída é a página inteira: a
 //  tela a mostra numa moldura, e o servidor a imprime em PDF pelo Edge. O
 //  que se vê é o que sai.
 // ═══════════════════════════════════════════════════════════════════════════
@@ -12,6 +12,7 @@ import type { Identificacao } from '../ui/guardarEntrada';
 import { capituloConclusoes, capituloDaVerificacao, capituloPremissas, tabelaResumo } from './capitulos';
 import { estiloDaMemoria } from './estiloRelatorio';
 import { dataDeHoje, esc, num } from './formatos';
+import { capituloGlossario } from './glossario';
 
 export const VERSAO = '0.1.0';
 
@@ -59,11 +60,14 @@ function capa(r: ResultadoDaVerificacao, id: Identificacao, titulos: readonly st
 }
 
 export function paginaDaMemoria(r: ResultadoDaVerificacao, id: Identificacao, data = dataDeHoje()): string {
-  const titulos = ['Premissas e dados de entrada', ...r.lista.map((vf) => esc(vf.titulo)), 'Conclusões'];
+  // O glossário fecha a memória, como anexo: premissas, contas e conclusões
+  // (com a assinatura) seguem na ordem do relatório do A-PORT.
+  const titulos = ['Premissas e dados de entrada', ...r.lista.map((vf) => esc(vf.titulo)), 'Conclusões', 'Glossário'];
   const corpo = [
     capituloPremissas(r, 1),
     ...r.lista.map((vf, i) => capituloDaVerificacao(vf, i + 2)),
     capituloConclusoes(r, r.lista.length + 2, id.responsavel, id.registro),
+    capituloGlossario(r, r.lista.length + 3),
   ]
     .join('')
     // O primeiro capítulo abre a página 2 colado no alto.

@@ -10,8 +10,8 @@
 import type { Situacao } from '../motor/memoria';
 import { esc } from './formatos';
 
-export function secao(n: number, titulo: string, corpo: string): string {
-  return `<section class="secao"><h2><span class="n">${n}</span><span>${titulo}</span></h2>${corpo}</section>`;
+export function secao(n: number, titulo: string, corpo: string, classe = ''): string {
+  return `<section class="secao${classe ? ` ${classe}` : ''}"><h2><span class="n">${n}</span><span>${titulo}</span></h2>${corpo}</section>`;
 }
 
 /** Um passo: o número e a referência à esquerda, o título e o conteúdo à direita. */

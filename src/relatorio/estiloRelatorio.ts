@@ -138,6 +138,12 @@ svg.secao-perfil { width: 76mm; height: auto; display: block; }
 .sec-texto-eixo { font: italic 13px "Serif"; fill: var(--ciano); }
 .props-tab td:nth-child(odd) { text-align: left; padding-left: 4mm; color: var(--grafite); }
 .props-tab td:first-child { padding-left: 0; }
+.secao.anexo { break-before: page; margin-top: 0; }
+.glossario td { vertical-align: baseline; }
+.glossario td:nth-child(1) { width: 22mm; font: 10pt "Serif", serif; }
+.glossario td:nth-child(2) { text-align: left; white-space: normal; }
+.glossario td:nth-child(2) i { font-family: "Serif", serif; }
+.glossario td:nth-child(3) { width: 16mm; color: var(--nevoa); }
 
 .fecho { break-inside: avoid; }
 .assinatura { margin-top: 14mm; width: 80mm; border-top: 0.6pt solid var(--tinta); padding-top: 1.6mm; font-size: 8.4pt; break-inside: avoid; }

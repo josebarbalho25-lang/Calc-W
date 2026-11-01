@@ -56,8 +56,9 @@ export function raioDeConcordancia(p: PerfilI): number {
 const mm = (v: number) => numExato(v, 1);
 
 export function desenhoDaSecao(p: PerfilI, largura = 380, altura = 300): DesenhoDaSecao {
-  // Folgas: em cima a cota de bf, à direita a de d, à esquerda a de tf.
-  const folga = { esq: 74, dir: 64, cima: 46, baixo: 26 };
+  // Folgas: em cima a cota de bf, à direita a de d, à esquerda a de tf,
+  // embaixo o "Y" do eixo (28 abaixo da mesa — com 26 ele saía da caixa).
+  const folga = { esq: 74, dir: 64, cima: 38, baixo: 34 };
   const s = Math.min((largura - folga.esq - folga.dir) / p.bf, (altura - folga.cima - folga.baixo) / p.d);
   const cx = folga.esq + (largura - folga.esq - folga.dir) / 2;
   const cy = folga.cima + (altura - folga.cima - folga.baixo) / 2;
@@ -106,7 +107,8 @@ export function desenhoDaSecao(p: PerfilI, largura = 380, altura = 300): Desenho
   textos.push({ x: cx, y: yb - 6, texto: 'b', indice: 'f', valor: mm(p.bf), ancora: 'middle', classe: 'cota' });
 
   // ── d, à direita ──
-  const xd = cx + B + 26;
+  // Longe o bastante para o "X" do eixo caber entre a mesa e a cota.
+  const xd = cx + B + 34;
   linhas.push({ x1: cx + B + 3, y1: cy - D, x2: xd + 4, y2: cy - D, classe: 'chamada' });
   linhas.push({ x1: cx + B + 3, y1: cy + D, x2: xd + 4, y2: cy + D, classe: 'chamada' });
   linhas.push({ x1: xd, y1: cy - D, x2: xd, y2: cy + D, classe: 'cota' });
