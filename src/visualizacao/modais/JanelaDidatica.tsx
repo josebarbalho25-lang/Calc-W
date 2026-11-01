@@ -149,16 +149,23 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
     palco = (
       <div className="palco-cb">
         <DiagramaCb forma={forma} psi={psi} />
-        <div className="formula-cb">
-          {s('C', 'b')} =
-          <span className="frac">
-            <span>12,5 · {num(cb.Mmax, 2)}</span>
-            <span>
-              2,5 · {num(cb.Mmax, 2)} + 3 · {num(cb.MA, 2)} + 4 · {num(cb.MB, 2)} + 3 · {num(cb.MC, 2)}
+        {forma === 'balanco' ? (
+          <div className="formula-cb">
+            {s('C', 'b')} = <b>{num(cb.Cb, 2)}</b>
+            <span className="ref">NBR 8800:2024, 5.4.2.3-b</span>
+          </div>
+        ) : (
+          <div className="formula-cb">
+            {s('C', 'b')} =
+            <span className="frac">
+              <span>12,5 · {num(cb.Mmax, 2)}</span>
+              <span>
+                2,5 · {num(cb.Mmax, 2)} + 3 · {num(cb.MA, 2)} + 4 · {num(cb.MB, 2)} + 3 · {num(cb.MC, 2)}
+              </span>
             </span>
-          </span>
-          · {s('R', 'm')} = <b>{num(cb.Cb, 3)}</b>
-        </div>
+            · {s('R', 'm')} = <b>{num(cb.Cb, 3)}</b>
+          </div>
+        )}
       </div>
     );
     controles = (
@@ -167,6 +174,7 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
           ['distribuida', 'Distribuída'],
           ['concentrada', 'Concentrada no meio'],
           ['pontas', 'Momentos nas pontas'],
+          ['balanco', 'Balanço'],
         ]}
         valor={forma}
         mudar={setForma}
@@ -187,7 +195,8 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
             </div>
           </div>
         )}
-        <Dado rotulo={s('R', 'm')} valor="1,00" />
+        {/* O Rm é da fórmula da alínea a); no balanço ela não entra. */}
+        {forma !== 'balanco' && <Dado rotulo={s('R', 'm')} valor="1,00" />}
         <Dado rotulo={s('C', 'b')} valor={num(cb.Cb, 3)} />
         <Dado rotulo={<>{s('C', 'b')} na verificação</>} valor={numExato(L.Cb, 3)} />
         <div className="acoes">

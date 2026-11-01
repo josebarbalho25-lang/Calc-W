@@ -641,6 +641,12 @@
   flex-wrap: wrap;
   margin: 8px 0;
 }
+.formula-cb .ref {
+  font-family: var(--font-mono);
+  font-size: var(--fs-nota);
+  color: var(--muted);
+  margin-left: 10px;
+}
 
 /* ── DESENHOS 2D DAS JANELAS (Cb e cisalhamento) ────────────────────────── */
 
@@ -659,6 +665,10 @@
   stroke-width: 3;
 }
 .cb-eixo {
+  stroke: var(--ink-2);
+  stroke-width: 1;
+}
+.cb-engaste line {
   stroke: var(--ink-2);
   stroke-width: 1;
 }
