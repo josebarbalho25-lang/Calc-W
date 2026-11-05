@@ -13,6 +13,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ResultadoDaVerificacao } from '../motor';
+import { useProjetista } from '../ui/configuracao';
 import { guardarIdentificacao, type Identificacao } from '../ui/guardarEntrada';
 import { exportarPdf, imprimirNoServidor } from './exportarPdf';
 import { nomeDoPdf, paginaDaMemoria } from './paginaDaMemoria';
@@ -31,9 +32,9 @@ const CAMPOS: Array<[keyof Identificacao, string]> = [
   ['documento', 'Documento'],
   ['revisao', 'Revisão'],
   ['empresa', 'Empresa'],
-  ['responsavel', 'Responsável técnico'],
-  ['registro', 'Registro'],
 ];
+// Nome, título e CREA de quem assina não estão aqui: vêm da engrenagem
+// (`ui/configuracao.ts`), um lugar só para todas as obras.
 
 /** A página corrida para a tela: a folha branca centrada, as fontes de /relatorio/. */
 function paraATela(html: string): string {
@@ -45,7 +46,8 @@ function paraATela(html: string): string {
 }
 
 export function MemoriaCalculo({ resultado, identificacao, mudarIdentificacao, fechar }: Props) {
-  const html = useMemo(() => paginaDaMemoria(resultado, identificacao), [resultado, identificacao]);
+  const projetista = useProjetista();
+  const html = useMemo(() => paginaDaMemoria(resultado, identificacao, projetista), [resultado, identificacao, projetista]);
   const [pdf, setPdf] = useState<{ url: string; html: string; blob: Blob } | null>(null);
   const [estado, setEstado] = useState<'imprimindo' | 'pronto' | 'falhou'>('imprimindo');
   const [recado, setRecado] = useState<{ texto: string; erro: boolean } | null>(null);
@@ -54,6 +56,10 @@ export function MemoriaCalculo({ resultado, identificacao, mudarIdentificacao, f
   // Reimprime o PDF 700 ms depois da última mudança; a impressão que ficou
   // velha no meio do caminho é cancelada, não só ignorada.
   useEffect(() => {
+    // `&previa=html` no endereço (só nos prints sem janela): fica a página
+    // corrida em HTML. O Edge sem janela não desenha o visualizador de PDF, e
+    // o print saía com a moldura cinza e vazia.
+    if (typeof location !== 'undefined' && /[#&]previa=html/.test(location.hash)) return;
     const controle = new AbortController();
     setEstado('imprimindo');
     const relogio = setTimeout(async () => {

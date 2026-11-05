@@ -9,8 +9,8 @@
 import { Html } from '@react-three/drei';
 import { useEffect, useState, type ReactNode } from 'react';
 import * as THREE from 'three';
-import type { PerfilI } from '../motor/tipos';
-import { raioDeConcordancia } from './geometriaDaSecao';
+import type { Perfil } from '../motor/tipos';
+import { contornoDoPerfil } from './contornoDoPerfil';
 
 /** A cor de um token do tema, lida na hora (o WebGL não lê CSS). */
 export function cor(token: string, reserva: string): THREE.Color {
@@ -23,34 +23,34 @@ export function corHex(token: string, reserva: string): string {
   return `#${cor(token, reserva).getHexString()}`;
 }
 
-/** O contorno do I na escala da cena, com os raios de concordância. A alma
- *  fica em y, as mesas em x — X e Y da seção, como no desenho 2D. */
-export function formaDoI(p: PerfilI, altura: number): { forma: THREE.Shape; d: number; bf: number; tf: number } {
-  const k = altura / p.d;
-  const B = (p.bf * k) / 2;
-  const D = (p.d * k) / 2;
-  const tw = (p.tw * k) / 2;
-  const tf = p.tf * k;
-  const r = Math.max(raioDeConcordancia(p) * k, 0.0001);
+/**
+ * O contorno do perfil na escala da cena — o mesmo do desenho 2D
+ * (`contornoDoPerfil.ts`), com a origem no centroide: a alma em y, as mesas
+ * em x, como na tela. `altura` é a altura da seção na cena; `d`, `bf` e `tf`
+ * voltam na escala (na cantoneira: as duas abas e a espessura).
+ */
+export function formaDoPerfil(
+  p: Perfil,
+  altura: number,
+): { forma: THREE.Shape; d: number; bf: number; tf: number; ytopo: number; ybase: number; tfBase: number } {
+  const c = contornoDoPerfil(p);
+  const k = altura / (c.caixa.ymax - c.caixa.ymin);
+  // ⚠️ ORIGEM NO CENTROIDE, como no desenho 2D: os eixos X e Y do corte e as
+  // setas dos esforços são desenhados na origem. Centrada pela caixa, no U e
+  // na cantoneira os eixos cruzavam no vazio, fora do aço (achado da revisão
+  // de 04/11/2026).
+  const mx = 0;
+  const my = 0;
   const s = new THREE.Shape();
-  s.moveTo(-B, -D);
-  s.lineTo(B, -D);
-  s.lineTo(B, -D + tf);
-  s.lineTo(tw + r, -D + tf);
-  s.absarc(tw + r, -D + tf + r, r, -Math.PI / 2, Math.PI, true);
-  s.lineTo(tw, D - tf - r);
-  s.absarc(tw + r, D - tf - r, r, Math.PI, Math.PI / 2, true);
-  s.lineTo(B, D - tf);
-  s.lineTo(B, D);
-  s.lineTo(-B, D);
-  s.lineTo(-B, D - tf);
-  s.lineTo(-tw - r, D - tf);
-  s.absarc(-tw - r, D - tf - r, r, Math.PI / 2, 0, true);
-  s.lineTo(-tw, -D + tf + r);
-  s.absarc(-tw - r, -D + tf + r, r, 0, -Math.PI / 2, true);
-  s.lineTo(-B, -D + tf);
+  c.pontos.forEach(([x, y], i) => (i ? s.lineTo((x - mx) * k, (y - my) * k) : s.moveTo((x - mx) * k, (y - my) * k)));
   s.closePath();
-  return { forma: s, d: 2 * D, bf: 2 * B, tf };
+  const tf = p.familia === 'L' ? p.t * k : p.tf * k;
+  // ⚠️ A SEÇÃO NÃO É SIMÉTRICA EM ALTURA em todo perfil: no I de mesas
+  // diferentes o centroide sobe para a mesa maior (achado da revisão de
+  // 04/11/2026 — a laje flutuava e o apoio entrava na mesa). Quem posiciona
+  // coisa em cima ou embaixo usa ytopo e ybase, não ±d/2.
+  const tfBase = p.familia === 'I' && p.soldado ? p.soldado.mesaInferior.tf * k : tf;
+  return { forma: s, d: altura, bf: (c.caixa.xmax - c.caixa.xmin) * k, tf, ytopo: c.caixa.ymax * k, ybase: c.caixa.ymin * k, tfBase };
 }
 
 /** true a partir do quadro seguinte à montagem — ver `Rotulo`. */

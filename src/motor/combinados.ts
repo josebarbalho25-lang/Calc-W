@@ -31,6 +31,8 @@ export function verificarCombinados(
   MxRd: number,
   My: number,
   MyRd: number,
+  /** Os eixos dos momentos: x e y (I, U) ou os principais u e v (cantoneira). */
+  eixos: [string, string] = ['x', 'y'],
 ): ResultadoCombinado {
   const comprime = N > 0;
   const NRd = comprime ? NcRd : NtRd;
@@ -42,7 +44,8 @@ export function verificarCombinados(
   const valor = alinea === 'a' ? razaoN + (8 / 9) * (razaoMx + razaoMy) : razaoN / 2 + (razaoMx + razaoMy);
 
   const iN = comprime ? 'c,' : 't,';
-  const momentos = x(fr(v('M', 'x,Sd'), v('M', 'x,Rd')), ' + ', fr(v('M', 'y,Sd'), v('M', 'y,Rd')));
+  const [e1, e2] = eixos;
+  const momentos = x(fr(v('M', `${e1},Sd`), v('M', `${e1},Rd`)), ' + ', fr(v('M', `${e2},Sd`), v('M', `${e2},Rd`)));
   const momentosN = x(fr(n(Math.abs(Mx)), n(MxRd)), ' + ', fr(n(Math.abs(My)), n(MyRd)));
 
   const passos: Passo[] = [

@@ -1,12 +1,12 @@
 {
-  "name": "calculadora-nbr8800",
+  "name": "pls-calc",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Verificação de perfis I laminados pela NBR 8800:2024 — módulo do A-PORT",
+  "description": "PLS Calc — verificação de perfis de aço laminados e soldados pela ABNT NBR 8800:2024",
   "author": "José Barbalho",
   "license": "MIT",
-  "repository": "https://github.com/josebarbalho25-lang/Calc-W",
+  "repository": "https://github.com/josebarbalho25-lang/PLS-Calc",
   "engines": {
     "node": ">=20.19"
   },
@@ -15,7 +15,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "check": "tsc --noEmit",
-    "teste": "vitest run"
+    "teste": "vitest run",
+    "instalador": "node instalador/construir.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
@@ -30,6 +31,8 @@
     "@types/react-dom": "^19.2.5",
     "@types/three": "^0.185.4",
     "@vitejs/plugin-react": "^6.1.0",
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0",
     "typescript": "^5.9.3",
     "vite": "^8.2.2",
     "vitest": "^4.1.11"

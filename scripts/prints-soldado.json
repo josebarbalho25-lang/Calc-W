@@ -1,0 +1,150 @@
+[
+ {
+  "nome": "01-VS-500x61-catalogo",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "VS 500 x 61",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 200,
+    "Mx": 15000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 80
+   },
+   "comprimentos": {
+    "Lx": 600,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null,
+   "porChapas": false,
+   "chapas": {
+    "d": 500,
+    "tw": 8,
+    "mesaSuperior": {
+     "bf": 250,
+     "tf": 16
+    },
+    "mesaInferior": {
+     "bf": 250,
+     "tf": 16
+    }
+   },
+   "acoChapa": "ASTM A572 GR50 chapa"
+  }
+ },
+ {
+  "nome": "02-chapas-mesa-esbelta",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "VS 500 x 61",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 100,
+    "Mx": 5000,
+    "My": 500,
+    "Vx": 0,
+    "Vy": 50
+   },
+   "comprimentos": {
+    "Lx": 200,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null,
+   "porChapas": true,
+   "chapas": {
+    "d": 400,
+    "tw": 6.3,
+    "mesaSuperior": {
+     "bf": 300,
+     "tf": 6.3
+    },
+    "mesaInferior": {
+     "bf": 300,
+     "tf": 6.3
+    }
+   },
+   "acoChapa": "ASTM A572 GR50 chapa"
+  }
+ },
+ {
+  "nome": "03-chapas-alma-esbelta",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "VS 500 x 61",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 50,
+    "Mx": 20000,
+    "My": 0,
+    "Vx": 0,
+    "Vy": 100
+   },
+   "comprimentos": {
+    "Lx": 600,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null,
+   "porChapas": true,
+   "chapas": {
+    "d": 1200,
+    "tw": 6.3,
+    "mesaSuperior": {
+     "bf": 300,
+     "tf": 16
+    },
+    "mesaInferior": {
+     "bf": 300,
+     "tf": 16
+    }
+   },
+   "acoChapa": "ASTM A572 GR50 chapa"
+  }
+ },
+ {
+  "nome": "04-CS-300x62-escuro",
+  "tema": "dark",
+  "entrada": {
+   "perfil": "CS 300 x 62",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 400,
+    "Mx": 3000,
+    "My": 800,
+    "Vx": 0,
+    "Vy": 20
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 400,
+    "Lt": 400,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null,
+   "porChapas": false,
+   "chapas": {
+    "d": 500,
+    "tw": 8,
+    "mesaSuperior": {
+     "bf": 250,
+     "tf": 16
+    },
+    "mesaInferior": {
+     "bf": 250,
+     "tf": 16
+    }
+   },
+   "acoChapa": "ASTM A36 chapa"
+  }
+ }
+]

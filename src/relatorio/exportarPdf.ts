@@ -12,6 +12,11 @@
 //  PDF perdido (achado da revisão de 01/11/2026). Agora: clique → caixa →
 //  imprime → grava. Se a caixa recusar, cai no download.
 //
+//  ⚠️ NO PROGRAMA INSTALADO (Electron) não há servidor: a página fala com o
+//  programa pela ponte `window.programa` (instalador/ponte.cjs) — ele imprime
+//  (printToPDF), abre a caixa "Salvar como" do Windows e grava. O mesmo
+//  trecho da PFF Calc (calculadora-nbr14762).
+//
 //  ⚠️ NÃO LANÇA: servidor sem a rota é estado, não exceção — volta a frase
 //  para a tela. E cancelar a caixa não é erro: volta calado.
 // ═══════════════════════════════════════════════════════════════════════════
@@ -20,10 +25,28 @@ interface JanelaComArquivos {
   showSaveFilePicker?: (opcoes: unknown) => Promise<FileSystemFileHandle>;
 }
 
+/** A ponte do programa instalado; no navegador, não existe. */
+interface Programa {
+  imprimirPdf: (html: string) => Promise<Uint8Array>;
+  ondeSalvar: (nome: string) => Promise<string | null>;
+  gravar: (senha: string, bytes: Uint8Array) => Promise<boolean>;
+}
+const programa = (): Programa | undefined => (typeof window === 'undefined' ? undefined : (window as unknown as { programa?: Programa }).programa);
+
 export type ResultadoDoPdf = { ok: true; gravado: boolean } | { ok: false; erro: string };
 
-/** Pede o PDF ao servidor. `sinal` cancela o pedido que ficou velho. */
+/** Pede o PDF ao servidor (ou ao programa instalado). `sinal` cancela o pedido que ficou velho. */
 export async function imprimirNoServidor(html: string, sinal?: AbortSignal): Promise<Blob | { erro: string }> {
+  const p = programa();
+  if (p) {
+    try {
+      const bytes = await p.imprimirPdf(html);
+      if (sinal?.aborted) return { erro: 'cancelado' };
+      return new Blob([bytes as BlobPart], { type: 'application/pdf' });
+    } catch {
+      return { erro: 'o PDF não saiu' };
+    }
+  }
   let resposta: Response;
   try {
     resposta = await fetch('/pdf', {
@@ -60,6 +83,19 @@ function baixar(pdf: Blob, nome: string): void {
  * já tem) — e só é chamado depois de a caixa "Salvar como" responder.
  */
 export async function exportarPdf(obterPdf: () => Promise<Blob | { erro: string }>, nome: string): Promise<ResultadoDoPdf> {
+  const p = programa();
+  if (p) {
+    const senha = await p.ondeSalvar(nome);
+    if (!senha) return { ok: true, gravado: false };
+    const pdf = await obterPdf();
+    if (!(pdf instanceof Blob)) return { ok: false, erro: pdf.erro };
+    try {
+      await p.gravar(senha, new Uint8Array(await pdf.arrayBuffer()));
+      return { ok: true, gravado: true };
+    } catch {
+      return { ok: false, erro: 'não foi possível gravar o arquivo escolhido' };
+    }
+  }
   const janela = window as unknown as JanelaComArquivos;
   let alvo: FileSystemFileHandle | null = null;
   if (typeof janela.showSaveFilePicker === 'function') {

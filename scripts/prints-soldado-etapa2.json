@@ -1,0 +1,162 @@
+[
+ {
+  "nome": "05-mesas-diferentes-superior",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "VS 500 x 61",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 100,
+    "Mx": 30000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 80
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 400,
+    "Lt": 400,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null,
+   "porChapas": true,
+   "chapas": {
+    "d": 600,
+    "tw": 8,
+    "mesaSuperior": {
+     "bf": 250,
+     "tf": 16
+    },
+    "mesaInferior": {
+     "bf": 150,
+     "tf": 12.5
+    }
+   },
+   "acoChapa": "ASTM A572 GR50 chapa",
+   "mesasDiferentes": true,
+   "curvatura": "simples"
+  },
+  "altura": 1000
+ },
+ {
+  "nome": "06-mesas-diferentes-reversa",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "VS 500 x 61",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 100,
+    "Mx": 30000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 80
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 400,
+    "Lt": 400,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null,
+   "porChapas": true,
+   "chapas": {
+    "d": 600,
+    "tw": 8,
+    "mesaSuperior": {
+     "bf": 250,
+     "tf": 16
+    },
+    "mesaInferior": {
+     "bf": 150,
+     "tf": 12.5
+    }
+   },
+   "acoChapa": "ASTM A572 GR50 chapa",
+   "mesasDiferentes": true,
+   "curvatura": "reversa"
+  },
+  "altura": 1000
+ },
+ {
+  "nome": "07-alma-esbelta-anexo-E",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "VS 500 x 61",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 50,
+    "Mx": 150000,
+    "My": 0,
+    "Vx": 0,
+    "Vy": 200
+   },
+   "comprimentos": {
+    "Lx": 900,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null,
+   "porChapas": true,
+   "chapas": {
+    "d": 1200,
+    "tw": 6.3,
+    "mesaSuperior": {
+     "bf": 300,
+     "tf": 16
+    },
+    "mesaInferior": {
+     "bf": 300,
+     "tf": 16
+    }
+   },
+   "acoChapa": "ASTM A572 GR50 chapa",
+   "mesasDiferentes": false,
+   "curvatura": "simples"
+  },
+  "altura": 1000
+ },
+ {
+  "nome": "08-mono-alma-esbelta-escuro",
+  "tema": "dark",
+  "entrada": {
+   "perfil": "VS 500 x 61",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 0,
+    "Mx": -100000,
+    "My": 0,
+    "Vx": 0,
+    "Vy": 150
+   },
+   "comprimentos": {
+    "Lx": 1000,
+    "Ly": 500,
+    "Lt": 500,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null,
+   "porChapas": true,
+   "chapas": {
+    "d": 1400,
+    "tw": 6.3,
+    "mesaSuperior": {
+     "bf": 400,
+     "tf": 19
+    },
+    "mesaInferior": {
+     "bf": 250,
+     "tf": 12.5
+    }
+   },
+   "acoChapa": "ASTM A572 GR50 chapa",
+   "mesasDiferentes": true,
+   "curvatura": "simples"
+  },
+  "altura": 1000
+ }
+]

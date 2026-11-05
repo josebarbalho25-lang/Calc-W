@@ -1,0 +1,11 @@
+{
+  "nome": "PLS Calc",
+  "titulo": "PLS Calc · NBR 8800",
+  "descricao": "Verificação de perfis de aço laminados e soldados pela ABNT NBR 8800:2024",
+  "appId": "br.com.proestruturas3d.plscalc",
+  "pacote": "pls-calc",
+  "icone": "icone.ico",
+  "termo": "../TERMO-DE-RESPONSABILIDADE.md",
+  "autor": "José Barbalho",
+  "site": "https://proestruturas3d.com.br"
+}

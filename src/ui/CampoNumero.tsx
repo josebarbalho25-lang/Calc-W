@@ -20,6 +20,8 @@ interface Props {
   unidade?: string;
   /** Menor valor aceito; abaixo disso o campo recusa e volta ao anterior. */
   minimo?: number;
+  /** Recusa também o próprio mínimo (o zero, num comprimento que não pode ser zero). */
+  acimaDoMinimo?: boolean;
   casas?: number;
   aoMudar: (v: number) => void;
   /** O (?) da janela didática, quando houver. */
@@ -27,13 +29,13 @@ interface Props {
   titulo?: string;
 }
 
-export function CampoNumero({ rotulo, valor, unidade, minimo, casas = 4, aoMudar, ajuda, titulo }: Props) {
+export function CampoNumero({ rotulo, valor, unidade, minimo, acimaDoMinimo, casas = 4, aoMudar, ajuda, titulo }: Props) {
   const [texto, setTexto] = useState(numExato(valor, casas));
   const [editando, setEditando] = useState(false);
   const desistiu = useRef(false);
   const mexeu = useRef(false);
   const lido = lerNumero(texto);
-  const errado = lido === null || (minimo !== undefined && lido < minimo);
+  const errado = lido === null || (minimo !== undefined && (acimaDoMinimo ? lido <= minimo : lido < minimo));
 
   useEffect(() => {
     if (!editando) setTexto(numExato(valor, casas));

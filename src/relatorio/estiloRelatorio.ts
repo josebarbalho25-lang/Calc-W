@@ -136,6 +136,12 @@ svg.secao-perfil { width: 76mm; height: auto; display: block; }
 .sec-texto-cota .simbolo { font-family: "Serif"; font-style: italic; }
 .sec-texto-cota .indice { font-size: 9px; }
 .sec-texto-eixo { font: italic 13px "Serif"; fill: var(--ciano); }
+.sec-eixo-principal { stroke: #8A9099; stroke-width: 0.6; stroke-dasharray: 6 4; }
+.sec-centroide circle { fill: none; stroke: var(--tinta); stroke-width: 1; }
+.sec-centroide path { fill: var(--tinta); }
+.sec-torcao circle { fill: #FFFFFF; stroke: var(--ciano); stroke-width: 1.3; }
+.sec-torcao line { stroke: var(--ciano); stroke-width: 0.9; }
+.sec-texto-centro { font: 600 10px "Mono"; fill: var(--tinta); }
 .props-tab td:nth-child(odd) { text-align: left; padding-left: 4mm; color: var(--grafite); }
 .props-tab td:first-child { padding-left: 0; }
 .secao.anexo { break-before: page; margin-top: 0; }
@@ -155,6 +161,16 @@ export interface MargensDaFolha {
   documento: string;
   revisao: string;
   versao: string;
+  /**
+   * O texto do pé da página, à esquerda. Sem ele, o da memória de cálculo
+   * ("Calculadora NBR 8800 … · A-PORT"); o manual passa "PLS Calc …". A
+   * memória ganha o nome novo quando ele decidir (ver o ESTADO).
+   */
+  rodape?: string;
+  /** O texto do meio do pé da página (o manual põe o site; a memória, nada). */
+  rodapeMeio?: string;
+  /** A palavra antes da revisão no cabeçalho: "rev." na memória, "versão" no manual. */
+  rotuloRevisao?: string;
 }
 
 /** O `<style>` inteiro, com as margens da folha escritas com os dados do documento. */
@@ -165,8 +181,9 @@ export function estiloDaMemoria(m: MargensDaFolha): string {
   size: A4;
   margin: 25mm 18mm 20mm 22mm;
   @top-left { content: "${css(m.obra)}"; ${cinza} vertical-align: bottom; padding-bottom: 5mm; }
-  @top-right { content: "${css(m.documento)}\\2003rev. ${css(m.revisao)}"; ${cinza} vertical-align: bottom; padding-bottom: 5mm; }
-  @bottom-left { content: "Calculadora NBR 8800 ${css(m.versao)} · A-PORT"; ${cinza} vertical-align: top; padding-top: 5mm; }
+  @top-right { content: "${css(m.documento)}\\2003${css(m.rotuloRevisao ?? 'rev.')} ${css(m.revisao)}"; ${cinza} vertical-align: bottom; padding-bottom: 5mm; }
+  @bottom-left { content: "${css(m.rodape ?? `Calculadora NBR 8800 ${m.versao} · A-PORT`)}"; ${cinza} vertical-align: top; padding-top: 5mm; }
+  ${m.rodapeMeio ? `@bottom-center { content: "${css(m.rodapeMeio)}"; ${cinza} vertical-align: top; padding-top: 5mm; }` : ''}
   @bottom-right { content: "Página " counter(page) " de " counter(pages); font: 7.4pt "Sans"; color: #4E5861; vertical-align: top; padding-top: 5mm; }
 }
 @page :first { @top-left { content: none; } @top-right { content: none; } }

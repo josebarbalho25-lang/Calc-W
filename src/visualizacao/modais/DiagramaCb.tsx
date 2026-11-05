@@ -103,7 +103,12 @@ export function DiagramaCb({ forma, psi }: Props) {
     xiMax = i / 200;
     break;
   }
-  const aEsquerda = !balanco && (xiMax > 0.8 || [0.25, 0.5, 0.75].some((m) => Math.abs(xiMax - m) < 1e-9));
+  // Máximo em cima de uma das seções A, B ou C: o rótulo dela já ocupa o
+  // lado de baixo e o da direita, e o do Mmáx vai para o lado de cima do
+  // ponto. À esquerda (como era) ele batia no rótulo do MA na distribuída.
+  const naSecao = !balanco && [0.25, 0.5, 0.75].some((m) => Math.abs(xiMax - m) < 1e-9);
+  const aEsquerda = !balanco && !naSecao && xiMax > 0.8;
+  const yMax = yEixo + momentoNoTrecho(forma, psi, xiMax) * escala * fase;
 
   return (
     <svg className="diagrama-cb" viewBox={`0 0 ${W} ${H}`} width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
@@ -148,14 +153,12 @@ export function DiagramaCb({ forma, psi }: Props) {
         );
       })}
       <circle cx={xs(xiMax)} cy={yEixo + momentoNoTrecho(forma, psi, xiMax) * escala * fase} r={5.5} className="cb-max" />
-      {/* O rótulo do Mmáx ao lado do próprio ponto. Quando o máximo cai numa
-          das seções A, B ou C (distribuída, concentrada), o rótulo dela já
-          está à direita: o do Mmáx vai para a esquerda. */}
+      {/* O rótulo do Mmáx ao lado do próprio ponto (ver `naSecao`). */}
       <text
-        x={xs(xiMax) + (aEsquerda ? -12 : 12)}
-        y={yEixo + momentoNoTrecho(forma, psi, xiMax) * escala * fase + (balanco ? -10 : 22)}
+        x={xs(xiMax) + (naSecao ? 0 : aEsquerda ? -12 : 12)}
+        y={yMax + (naSecao ? (yMax >= yEixo ? -12 : 30) : balanco ? -10 : 22)}
         className="cb-rotulo max"
-        textAnchor={aEsquerda ? 'end' : 'start'}
+        textAnchor={naSecao ? 'middle' : aEsquerda ? 'end' : 'start'}
       >
         M<tspan dy={3} fontSize="10">máx</tspan>
         <tspan dy={-3}> = {num(c.Mmax, 2)}</tspan>

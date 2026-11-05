@@ -104,6 +104,26 @@ export interface Verificacao {
   avisos: string[];
 }
 
+/**
+ * A verificação que governa, a mesma na tela e na memória: primeiro a que
+ * não atende (entre elas, a alma esbelta sem número, NaN, é a pior; senão a
+ * de maior razão), depois a "avaliar" sem número, depois a maior razão.
+ *
+ * ⚠️ NaN NÃO É SEMPRE O PIOR. A regra antiga ("NaN ganha") foi feita para a
+ * alma esbelta, que reprova; com os cartões "avaliar" sem número da
+ * cantoneira (FLT sem o βw) ela elegia o cartão pendente e escondia uma
+ * compressão que não atendia (achado da revisão de 04/11/2026).
+ */
+export function piorVerificacao(lista: readonly Verificacao[]): Verificacao {
+  const peso = (vf: Verificacao) => (vf.situacao === 'naoAtende' ? 2 : vf.situacao === 'avaliar' && Number.isNaN(vf.razao) ? 1 : 0);
+  return lista.reduce((a, b) => {
+    if (peso(b) !== peso(a)) return peso(b) > peso(a) ? b : a;
+    if (Number.isNaN(a.razao)) return a;
+    if (Number.isNaN(b.razao)) return b;
+    return b.razao > a.razao ? b : a;
+  });
+}
+
 /** Situação pela razão, com espaço para o "avaliar" quando há ressalva. */
 export function situacaoPelaRazao(razao: number, avisos: readonly string[] = []): Situacao {
   if (!(razao <= 1)) return 'naoAtende';

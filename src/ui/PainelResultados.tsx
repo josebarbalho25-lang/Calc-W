@@ -6,8 +6,7 @@
 import { useState } from 'react';
 import type { ResultadoDaVerificacao } from '../motor';
 import type { ChaveDaVerificacao } from '../motor/memoria';
-import { num, numExato } from '../relatorio/formatos';
-import { raioDeConcordancia } from '../visualizacao/geometriaDaSecao';
+import { propriedadesDoPerfil } from '../relatorio/propriedadesDoPerfil';
 import { SecaoPerfil2D } from '../visualizacao/SecaoPerfil2D';
 import { CardVerificacao } from './CardVerificacao';
 
@@ -19,11 +18,16 @@ interface Props {
   recado: { texto: string; erro: boolean } | null;
 }
 
-function Prop({ rotulo, indice, valor, unidade }: { rotulo: string; indice?: string; valor: string; unidade: string }) {
+function Prop({ rotulo, indice, linha, valor, unidade }: { rotulo: string; indice?: string; linha?: boolean; valor: string; unidade: string }) {
   return (
     <div className="prop">
       <span className="prop-rotulo">
-        <i>{rotulo}</i>
+        {/* O apóstrofo do d' vai DENTRO do itálico: fora dele, colado no d
+            inclinado, sumia na tela (ele pegou no print do tema claro). */}
+        <i>
+          {rotulo}
+          {linha && '′'}
+        </i>
         {indice && <sub>{indice}</sub>}
       </span>
       <span className="prop-valor">{valor}</span>
@@ -35,7 +39,6 @@ function Prop({ rotulo, indice, valor, unidade }: { rotulo: string; indice?: str
 export function PainelResultados({ resultado, abrirMemoria, exportarPdf, exportando, recado }: Props) {
   const [aberta, setAberta] = useState<ChaveDaVerificacao | null>(null);
   const p = resultado.entrada.perfil;
-  const n = (v: number) => numExato(v, 2);
 
   return (
     <div className="painel-resultados">
@@ -46,24 +49,9 @@ export function PainelResultados({ resultado, abrirMemoria, exportarPdf, exporta
             <SecaoPerfil2D perfil={p} />
           </div>
           <div className="props">
-            <Prop rotulo="d" valor={n(p.d)} unidade="mm" />
-            <Prop rotulo="b" indice="f" valor={n(p.bf)} unidade="mm" />
-            <Prop rotulo="t" indice="w" valor={n(p.tw)} unidade="mm" />
-            <Prop rotulo="t" indice="f" valor={n(p.tf)} unidade="mm" />
-            <Prop rotulo="d'" valor={n(p.dLinha)} unidade="mm" />
-            <Prop rotulo="r" valor={numExato(raioDeConcordancia(p), 1)} unidade="mm" />
-            <Prop rotulo="A" indice="g" valor={n(p.A)} unidade="cm²" />
-            <Prop rotulo="m" valor={n(p.massa)} unidade="kg/m" />
-            <Prop rotulo="I" indice="x" valor={num(p.Ix, 0)} unidade="cm⁴" />
-            <Prop rotulo="I" indice="y" valor={num(p.Iy, 0)} unidade="cm⁴" />
-            <Prop rotulo="W" indice="x" valor={n(p.Wx)} unidade="cm³" />
-            <Prop rotulo="W" indice="y" valor={n(p.Wy)} unidade="cm³" />
-            <Prop rotulo="Z" indice="x" valor={n(p.Zx)} unidade="cm³" />
-            <Prop rotulo="Z" indice="y" valor={n(p.Zy)} unidade="cm³" />
-            <Prop rotulo="r" indice="x" valor={n(p.rx)} unidade="cm" />
-            <Prop rotulo="r" indice="y" valor={n(p.ry)} unidade="cm" />
-            <Prop rotulo="J" valor={n(p.J)} unidade="cm⁴" />
-            <Prop rotulo="C" indice="w" valor={num(p.Cw, 0)} unidade="cm⁶" />
+            {propriedadesDoPerfil(p).map((q, i) => (
+              <Prop key={i} rotulo={q.simbolo} indice={q.indice} linha={q.linha} valor={q.valor} unidade={q.unidade} />
+            ))}
           </div>
         </div>
       </fieldset>

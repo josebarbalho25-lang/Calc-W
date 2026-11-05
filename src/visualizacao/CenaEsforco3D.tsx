@@ -22,9 +22,10 @@ import { Line, OrbitControls } from '@react-three/drei';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, type ReactNode } from 'react';
 import * as THREE from 'three';
-import type { PerfilI } from '../motor/tipos';
+import type { Perfil } from '../motor/tipos';
 import { COMPRIMENTO_DA_BARRA, deformada, type Esforco } from './deformadaDoEsforco';
-import { cor, corHex, formaDoI, Rotulo } from './pecas3D';
+import { useTema } from '../estilo/preferenciasDaInterface';
+import { cor, corHex, formaDoPerfil, Rotulo } from './pecas3D';
 
 const L = COMPRIMENTO_DA_BARRA;
 const ALTURA = 0.7;
@@ -123,7 +124,7 @@ function EixosDoCorte({ B, D, aceso }: { B: number; D: number; aceso: 'x' | 'y' 
 }
 
 interface Props {
-  perfil: PerfilI;
+  perfil: Perfil;
   esforco: Esforco;
   /** Só no N: a seta entrando (compressão) ou saindo (tração). */
   compressao: boolean;
@@ -135,7 +136,7 @@ function BarraComEsforco({ perfil, esforco, compressao }: Props) {
   const pulso = useRef<THREE.Group>(null);
 
   const { geometria, original, arestas, materiais, B, D } = useMemo(() => {
-    const { forma, d, bf } = formaDoI(perfil, ALTURA);
+    const { forma, bf, ytopo, ybase } = formaDoPerfil(perfil, ALTURA);
     const g = new THREE.ExtrudeGeometry(forma, { depth: L, steps: 40, bevelEnabled: false, curveSegments: 5 });
     const aco = cor('--peca-viga', '#c8c8d3');
     // A face do corte (as tampas do extrudado, grupo 0) mais clara: é a
@@ -150,7 +151,10 @@ function BarraComEsforco({ perfil, esforco, compressao }: Props) {
         new THREE.MeshStandardMaterial({ color: aco, metalness: 0.35, roughness: 0.55, side: THREE.DoubleSide }),
       ],
       B: bf / 2,
-      D: d / 2,
+      // A maior das duas distâncias do centroide às faces: no I de mesas
+      // diferentes a seção não é simétrica em altura, e as setas não podem
+      // entrar na mesa.
+      D: Math.max(ytopo, -ybase),
     };
   }, [perfil]);
 
@@ -281,8 +285,11 @@ function BarraComEsforco({ perfil, esforco, compressao }: Props) {
 }
 
 export function CenaEsforco3D(props: Props) {
+  // O 3D lê a cor do token na montagem: com o tema na chave, a cena se
+  // monta de novo e repinta (`preferenciasDaInterface.ts`).
+  const tema = useTema();
   return (
-    <Canvas camera={{ position: [5.3, 2.5, 3.3], fov: 36 }} dpr={[1, 2]} gl={{ antialias: true }}>
+    <Canvas key={tema} camera={{ position: [5.3, 2.5, 3.3], fov: 36 }} dpr={[1, 2]} gl={{ antialias: true }}>
       <hemisphereLight args={['#ffffff', '#30303a', 0.9]} />
       <ambientLight intensity={0.35} />
       <directionalLight position={[6, 10, 7]} intensity={1.4} />

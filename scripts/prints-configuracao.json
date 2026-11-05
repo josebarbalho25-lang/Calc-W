@@ -1,0 +1,153 @@
+[
+ {
+  "nome": "01-configuracao-com-projetista",
+  "janela": "configuracao",
+  "tema": "paper",
+  "projetista": {
+   "nome": "José Barbalho",
+   "titulo": "Engenheiro Civil",
+   "crea": "000000/D"
+  },
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 250,
+    "Mx": 9000,
+    "My": 600,
+    "Vx": 0,
+    "Vy": 120
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "02-configuracao-em-branco",
+  "janela": "configuracao",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 250,
+    "Mx": 9000,
+    "My": 600,
+    "Vx": 0,
+    "Vy": 120
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "03-tela-rodape",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 250,
+    "Mx": 9000,
+    "My": 600,
+    "Vx": 0,
+    "Vy": 120
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "04-tela-escuro",
+  "tema": "dark",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 250,
+    "Mx": 9000,
+    "My": 600,
+    "Vx": 0,
+    "Vy": 120
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "05-configuracao-escuro",
+  "janela": "configuracao",
+  "tema": "dark",
+  "projetista": {
+   "nome": "José Barbalho",
+   "titulo": "Engenheiro Civil",
+   "crea": "000000/D"
+  },
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 250,
+    "Mx": 9000,
+    "My": 600,
+    "Vx": 0,
+    "Vy": 120
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "06-tela-claro",
+  "tema": "modern",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 250,
+    "Mx": 9000,
+    "My": 600,
+    "Vx": 0,
+    "Vy": 120
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ }
+]

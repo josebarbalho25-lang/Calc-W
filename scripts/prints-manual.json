@@ -1,0 +1,442 @@
+[
+ {
+  "nome": "tela-W",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 300,
+    "Mx": 8000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 60
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "tema-escuro",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 300,
+    "Mx": 8000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 60
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "janela-Lx",
+  "janela": "Lx",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 300,
+    "Mx": 8000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 60
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "janela-Lt",
+  "janela": "Lt",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 300,
+    "Mx": 8000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 60
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "janela-Cb",
+  "janela": "Cb",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 300,
+    "Mx": 8000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 60
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "janela-a",
+  "janela": "a",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 300,
+    "Mx": 8000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 60
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "janela-Mx",
+  "janela": "Mx",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 300,
+    "Mx": 8000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 60
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "janela-N",
+  "janela": "N",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 300,
+    "Mx": 8000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 60
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "memoria",
+  "janela": "memoria",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 300,
+    "Mx": 8000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 60
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  },
+  "projetista": {
+   "nome": "José Barbalho",
+   "titulo": "Engenheiro Civil",
+   "crea": "000000/D"
+  }
+ },
+ {
+  "nome": "tela-U",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "U 203,2 x 17,1",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 50,
+    "Mx": 1500,
+    "My": -200,
+    "Vx": 5,
+    "Vy": 20
+   },
+   "comprimentos": {
+    "Lx": 300,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "tela-L-trelica",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "L 4\" x 3\" - 9,52",
+   "aco": "ASTM A36",
+   "esforcos": {
+    "N": 120,
+    "Mx": 0,
+    "My": 0,
+    "Vx": 0,
+    "Vy": 0
+   },
+   "comprimentos": {
+    "Lx": 200,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": {
+    "aba": "menor",
+    "trelica": "espacial"
+   }
+  }
+ },
+ {
+  "nome": "tela-L-flexao",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "L 3\" x 3\" - 6,35",
+   "aco": "ASTM A36",
+   "esforcos": {
+    "N": 40,
+    "Mx": 2500,
+    "My": 0,
+    "Vx": 0,
+    "Vy": 15
+   },
+   "comprimentos": {
+    "Lx": 150,
+    "Ly": 150,
+    "Lt": 150,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "configuracao",
+  "janela": "configuracao",
+  "tema": "paper",
+  "projetista": {
+   "nome": "José Barbalho",
+   "titulo": "Engenheiro Civil",
+   "crea": "000000/D"
+  },
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 300,
+    "Mx": 8000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 60
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1.14,
+    "a": 0
+   },
+   "ligacao": null
+  },
+  "altura": 430
+ },
+ {
+  "nome": "tela-soldado",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 100,
+    "Mx": 30000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 80
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 400,
+    "Lt": 400,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null,
+   "porChapas": true,
+   "chapas": {
+    "d": 600,
+    "tw": 8,
+    "mesaSuperior": {
+     "bf": 250,
+     "tf": 16
+    },
+    "mesaInferior": {
+     "bf": 150,
+     "tf": 12.5
+    }
+   },
+   "acoChapa": "ASTM A572 GR50 chapa",
+   "mesasDiferentes": true,
+   "curvatura": "simples"
+  },
+  "altura": 1000
+ },
+ {
+  "nome": "tela-soldado-reversa",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 100,
+    "Mx": 30000,
+    "My": 500,
+    "Vx": 10,
+    "Vy": 80
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 400,
+    "Lt": 400,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null,
+   "porChapas": true,
+   "chapas": {
+    "d": 600,
+    "tw": 8,
+    "mesaSuperior": {
+     "bf": 250,
+     "tf": 16
+    },
+    "mesaInferior": {
+     "bf": 150,
+     "tf": 12.5
+    }
+   },
+   "acoChapa": "ASTM A572 GR50 chapa",
+   "mesasDiferentes": true,
+   "curvatura": "reversa"
+  },
+  "altura": 1000
+ },
+ {
+  "nome": "tela-anexo-E",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "W 250 x 38,5",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 50,
+    "Mx": 150000,
+    "My": 0,
+    "Vx": 0,
+    "Vy": 150
+   },
+   "comprimentos": {
+    "Lx": 900,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null,
+   "porChapas": true,
+   "chapas": {
+    "d": 1200,
+    "tw": 6.3,
+    "mesaSuperior": {
+     "bf": 300,
+     "tf": 16
+    },
+    "mesaInferior": {
+     "bf": 300,
+     "tf": 16
+    }
+   },
+   "acoChapa": "ASTM A572 GR50 chapa",
+   "mesasDiferentes": false,
+   "curvatura": "simples"
+  },
+  "altura": 1000
+ }
+]

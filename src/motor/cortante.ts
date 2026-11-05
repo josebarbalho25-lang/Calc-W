@@ -15,7 +15,7 @@
 // ═══════════════════════════════════════════════════════════════════════════
 
 import { fr, n, par, pot, rz, situacaoPelaRazao, v, x, type Conta, type Passo, type Verificacao } from './memoria';
-import { E, GAMA_A1, type SecaoI } from './secao';
+import { E, GAMA_A1, type SecaoI, type SecaoU } from './secao';
 import type { Aco } from './tipos';
 
 export interface ChapaAoCisalhamento {
@@ -82,7 +82,7 @@ export interface ResultadoCortante {
   verificacao: Verificacao;
 }
 
-export function verificarCortanteY(s: SecaoI, aco: Aco, a: number, VSd: number): ResultadoCortante {
+export function verificarCortanteY(s: SecaoI | SecaoU, aco: Aco, a: number, VSd: number): ResultadoCortante {
   const fy = aco.fy;
   const lambda = s.h / s.tw;
   const aSobreH = a > 0 ? a / s.h : undefined;
@@ -103,7 +103,7 @@ export function verificarCortanteY(s: SecaoI, aco: Aco, a: number, VSd: number):
   const passos: Passo[] = [
     {
       ref: '5.4.3.1.1; 5.4.3.1.2',
-      titulo: 'Alma — seções I fletidas em relação ao eixo perpendicular à alma',
+      titulo: `Alma — seções ${s.familia === 'U' ? 'U' : 'I'} fletidas em relação ao eixo perpendicular à alma`,
       contas: [
         ...kvConta,
         ...contasComuns(
@@ -137,23 +137,38 @@ export function verificarCortanteY(s: SecaoI, aco: Aco, a: number, VSd: number):
   };
 }
 
-export function verificarCortanteX(s: SecaoI, aco: Aco, VSd: number): ResultadoCortante {
+/**
+ * Em X as mesas resistem (5.4.3.5): no I, h é a meia mesa (bf/2), porque a
+ * alma prende cada mesa no meio; no U a mesa inteira tem uma borda só presa,
+ * e h = bf.
+ */
+export function verificarCortanteX(s: SecaoI | SecaoU, aco: Aco, VSd: number): ResultadoCortante {
   const fy = aco.fy;
-  const lambda = s.bf / 2 / s.tf;
-  const c = cisalhamento(lambda, 1.2, 2 * s.bf * s.tf, fy);
+  const doU = s.familia === 'U';
+  // Mesas diferentes: a área é a soma das duas, e a esbeltez a da mesa de
+  // b/t maior (a favor da segurança — as duas trabalham juntas).
+  const g = s.familia === 'I' && s.monossimetrico ? s.geo : undefined;
+  const lambda = g ? Math.max(g.bs / 2 / g.ts, g.bi / 2 / g.ti) : doU ? s.bf / s.tf : s.bf / 2 / s.tf;
+  const c = cisalhamento(lambda, 1.2, g ? g.bs * g.ts + g.bi * g.ti : 2 * s.bf * s.tf, fy);
   const razao = Math.abs(VSd) / c.VRd;
   const passos: Passo[] = [
     {
       ref: '5.4.3.5; 5.4.3.1.1',
-      titulo: 'Mesas — seções I fletidas em relação ao eixo perpendicular às mesas',
+      titulo: `Mesas — seções ${doU ? 'U' : 'I'} fletidas em relação ao eixo perpendicular às mesas`,
       contas: [
         { simbolo: v('k', 'v'), valor: 1.2, casas: 1 },
         ...contasComuns(
           c,
           fy,
           Math.abs(VSd),
-          { simbolo: v('A', 'w'), formula: x('2 ', v('b', 'f'), ' ', v('t', 'f')), numeros: x('2 · ', n(s.bf), ' · ', n(s.tf)), valor: c.Aw, unidade: 'cm²' },
-          { simbolo: v('λ'), formula: fr(x(v('b', 'f'), '/2'), v('t', 'f')), numeros: fr(x(n(s.bf), '/2'), n(s.tf)), valor: lambda, casas: 2 },
+          g
+            ? { simbolo: v('A', 'w'), formula: x(v('b', 'fs'), ' ', v('t', 'fs'), ' + ', v('b', 'fi'), ' ', v('t', 'fi')), numeros: x(n(g.bs), ' · ', n(g.ts), ' + ', n(g.bi), ' · ', n(g.ti)), valor: c.Aw, unidade: 'cm²' }
+            : { simbolo: v('A', 'w'), formula: x('2 ', v('b', 'f'), ' ', v('t', 'f')), numeros: x('2 · ', n(s.bf), ' · ', n(s.tf)), valor: c.Aw, unidade: 'cm²' },
+          g
+            ? { simbolo: v('λ'), formula: x('máx', par(x(fr(x(v('b', 'fs'), '/2'), v('t', 'fs')), '; ', fr(x(v('b', 'fi'), '/2'), v('t', 'fi'))))), numeros: x('máx', par(x(fr(x(n(g.bs), '/2'), n(g.ts)), '; ', fr(x(n(g.bi), '/2'), n(g.ti))))), valor: lambda, casas: 2 }
+            : doU
+            ? { simbolo: v('λ'), formula: fr(v('b', 'f'), v('t', 'f')), numeros: fr(n(s.bf), n(s.tf)), valor: lambda, casas: 2 }
+            : { simbolo: v('λ'), formula: fr(x(v('b', 'f'), '/2'), v('t', 'f')), numeros: fr(x(n(s.bf), '/2'), n(s.tf)), valor: lambda, casas: 2 },
         ),
       ],
     },

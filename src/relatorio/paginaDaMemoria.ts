@@ -9,16 +9,25 @@
 
 import type { ResultadoDaVerificacao } from '../motor';
 import type { Identificacao } from '../ui/guardarEntrada';
+import type { Projetista } from './projetista';
 import { capituloConclusoes, capituloDaVerificacao, capituloPremissas, tabelaResumo } from './capitulos';
 import { estiloDaMemoria } from './estiloRelatorio';
 import { dataDeHoje, esc, num } from './formatos';
 import { capituloGlossario } from './glossario';
 
+/** "tração, compressão, flexão, cortante e esforços combinados" — o que esta memória verifica. */
+function estados(r: ResultadoDaVerificacao): string {
+  const nomes: Record<string, string> = { tracao: 'tração', compressao: 'compressão', flexaoX: 'flexão', flexaoY: 'flexão', cortanteX: 'cortante', cortanteY: 'cortante', combinada: 'esforços combinados' };
+  const lista = [...new Set(r.lista.map((vf) => nomes[vf.chave]))];
+  return lista.length > 1 ? `${lista.slice(0, -1).join(', ')} e ${lista[lista.length - 1]}` : lista[0] ?? '';
+}
+
 export const VERSAO = '0.1.0';
 
 const ou = (s: string) => (s.trim() ? esc(s) : '—');
 
-function capa(r: ResultadoDaVerificacao, id: Identificacao, titulos: readonly string[], data: string): string {
+
+function capa(r: ResultadoDaVerificacao, id: Identificacao, p: Projetista, titulos: readonly string[], data: string): string {
   const avisos = r.lista.flatMap((vf) => vf.avisos.map((a) => `${vf.titulo}: ${a}`));
   const metade = Math.ceil(titulos.length / 2);
   const celulas: string[] = [];
@@ -35,7 +44,7 @@ function capa(r: ResultadoDaVerificacao, id: Identificacao, titulos: readonly st
     `<section class="capa">` +
     `<div class="capa-topo"><span class="marca">A-PORT · NBR 8800</span><span>Memória de cálculo estrutural</span></div>` +
     `<h1>Verificação de perfil de aço</h1>` +
-    `<p class="subtitulo">Perfil ${esc(r.entrada.perfil.nome)} em ${esc(r.entrada.aco.nome)} — estados-limites últimos de tração, compressão, flexão, cortante e esforços combinados pela ABNT NBR 8800:2024</p>` +
+    `<p class="subtitulo">Perfil ${esc(r.entrada.perfil.nome)} em ${esc(r.entrada.aco.nome)} — estados-limites últimos de ${esc(estados(r))} pela ABNT NBR 8800:2024</p>` +
     `<div class="ficha"><dl>` +
     `<dt>Obra</dt><dd>${ou(id.obra)}</dd><dt>Cliente</dt><dd>${ou(id.cliente)}</dd><dt>Elemento</dt><dd>${ou(id.elemento)}</dd>` +
     `<dt>Perfil</dt><dd>${esc(r.entrada.perfil.nome)}</dd><dt>Aço</dt><dd>${esc(r.entrada.aco.nome)}</dd>` +
@@ -50,8 +59,8 @@ function capa(r: ResultadoDaVerificacao, id: Identificacao, titulos: readonly st
     `<div class="indice-titulo">Conteúdo</div><div class="indice">${celulas.join('')}</div>` +
     `<div class="carimbo">` +
     `<div><span class="rot">Empresa</span><span class="empresa">${ou(id.empresa)}</span></div>` +
-    `<div><span class="rot">Responsável técnico</span><span class="forte">${ou(id.responsavel)}</span></div>` +
-    `<div><span class="rot">Registro</span>${ou(id.registro)}</div>` +
+    `<div><span class="rot">Responsável técnico</span><span class="forte">${ou(p.nome)}</span>${p.titulo.trim() ? `<br>${esc(p.titulo.trim())}` : ''}</div>` +
+    `<div><span class="rot">CREA</span>${ou(p.crea)}</div>` +
     `<div><span class="rot">Elemento</span>${ou(id.elemento)}</div>` +
     `<div><span class="rot">Processamento</span>Calculadora NBR 8800 ${VERSAO}</div>` +
     `<div><span class="rot">Documento</span><span class="forte">${ou(id.documento)}</span> rev. ${ou(id.revisao)}<br>${data}</div>` +
@@ -59,14 +68,14 @@ function capa(r: ResultadoDaVerificacao, id: Identificacao, titulos: readonly st
   );
 }
 
-export function paginaDaMemoria(r: ResultadoDaVerificacao, id: Identificacao, data = dataDeHoje()): string {
+export function paginaDaMemoria(r: ResultadoDaVerificacao, id: Identificacao, projetista: Projetista, data = dataDeHoje()): string {
   // O glossário fecha a memória, como anexo: premissas, contas e conclusões
   // (com a assinatura) seguem na ordem do relatório do A-PORT.
   const titulos = ['Premissas e dados de entrada', ...r.lista.map((vf) => esc(vf.titulo)), 'Conclusões', 'Glossário'];
   const corpo = [
     capituloPremissas(r, 1),
     ...r.lista.map((vf, i) => capituloDaVerificacao(vf, i + 2)),
-    capituloConclusoes(r, r.lista.length + 2, id.responsavel, id.registro),
+    capituloConclusoes(r, r.lista.length + 2, projetista),
     capituloGlossario(r, r.lista.length + 3),
   ]
     .join('')
@@ -77,7 +86,7 @@ export function paginaDaMemoria(r: ResultadoDaVerificacao, id: Identificacao, da
     '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">' +
     `<title>${esc(titulo)}</title>` +
     estiloDaMemoria({ obra: id.obra || r.entrada.perfil.nome, documento: id.documento, revisao: id.revisao, versao: VERSAO }) +
-    `</head><body>${capa(r, id, titulos, data)}${corpo}</body></html>`
+    `</head><body>${capa(r, id, projetista, titulos, data)}${corpo}</body></html>`
   );
 }
 

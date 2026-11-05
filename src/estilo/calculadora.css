@@ -231,6 +231,34 @@
   font: italic 13px var(--font-formula);
   fill: var(--accent-3);
 }
+/* U e cantoneira: eixos principais, centroide (G) e centro de torção (CT) —
+   os mesmos traços da irmã de formados a frio. */
+.sec-eixo-principal {
+  stroke: var(--muted-2);
+  stroke-width: 0.7;
+  stroke-dasharray: 6 4;
+}
+.sec-centroide circle {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+.sec-centroide path {
+  fill: var(--ink);
+}
+.sec-torcao circle {
+  fill: var(--bg);
+  stroke: var(--accent-3);
+  stroke-width: 1.4;
+}
+.sec-torcao line {
+  stroke: var(--accent-3);
+  stroke-width: 1;
+}
+.sec-texto-centro {
+  font: 600 11px var(--font-mono);
+  fill: var(--ink-2);
+}
 
 .props {
   display: grid;
@@ -762,4 +790,142 @@
 .didatica-lado input[type='range'] {
   flex: 1;
   accent-color: var(--accent-3);
+}
+
+/* ── CONFIGURAÇÃO ───────────────────────────────────────────────────────
+   A engrenagem na ponta direita da barra de cima (o ícone do A-PORT) e o
+   painel pequeno que ela abre, pendurado embaixo dela. */
+.configuracao {
+  position: relative;
+}
+.btn-engrenagem {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.btn-engrenagem:hover,
+.btn-engrenagem.ativo {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+.painel-configuracao {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+.segmentado {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.segmentado button {
+  padding: 5px 0;
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: var(--fs-rotulo);
+  cursor: pointer;
+}
+.segmentado button:last-child {
+  border-right: 0;
+}
+.segmentado button:hover {
+  color: var(--ink);
+}
+.segmentado.duas {
+  grid-template-columns: repeat(2, 1fr);
+}
+.painel-entradas .segmentado {
+  margin-bottom: 8px;
+}
+.segmentado button.ativo {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* O logo da calculadora, à esquerda do nome — só na tela. O glifo é uma
+   MÁSCARA: o desenho vem do PNG, a cor vem do tema (branco no escuro, o azul
+   da marca no claro e no papel). Um arquivo só, e a troca de tema repinta. */
+/* 28 px e centrado (pedido dele, 04/11/2026): com 37 px o I encostava na
+   borda de cima da janela no programa instalado, sem a barra de título. As
+   medidas são as da PFF Calc, para as duas terem o mesmo cabeçalho: 50 px
+   (49 úteis e o fio de baixo, ver .app), 10,5 px em cima e embaixo do I e
+   10 px da borda esquerda (o padding do cabeçalho é 14: −4 aqui). */
+.topbar .logo-calculadora {
+  flex: none;
+  height: 28px;
+  width: calc(28px * 178 / 288);
+  margin-left: -4px;
+  background-color: #0e1d46;
+  -webkit-mask: url('/logo-glifo.png') center / contain no-repeat;
+  mask: url('/logo-glifo.png') center / contain no-repeat;
+}
+body[data-theme='dark'] .topbar .logo-calculadora {
+  background-color: #fff;
+}
+
+/* O site do autor, na ponta direita da barra de baixo. */
+.statusbar a.site {
+  color: var(--muted);
+  text-decoration: none;
+}
+/* A ponte com 27 px: com a altura do texto ela virava um "+" e perdia o
+   pincel. A barra de baixo cresce para caber (--status-h, mais abaixo). */
+.statusbar a.site .logo-autor {
+  height: 27px;
+  width: auto;
+}
+.app {
+  --status-h: calc(34px * var(--escala-ui));
+  /* O cabeçalho da PFF Calc: as duas calculadoras com a mesma altura (a do
+     A-PORT, nos tokens, é 42). */
+  --topbar-h: calc(50px * var(--escala-ui));
+}
+.statusbar a.site:hover {
+  color: var(--accent-3);
+  text-decoration: underline;
+}
+
+/* ── Programa instalado: sem a barra de título do Windows ──────────────────
+   (html.programa, posto por ui/barraDaJanela.ts; no navegador não vale.) O
+   cabeçalho é a área de arrastar a janela, e o duplo clique nele maximiza,
+   como numa barra de título. À direita fica a folga dos três botões do
+   Windows, que o programa desenha por cima: env(titlebar-area-width) é a
+   largura livre do cabeçalho, sem eles — o mesmo jeito do Pró-Viga 3D e da
+   PFF Calc. */
+html.programa .topbar {
+  -webkit-app-region: drag;
+  padding-right: max(12px, calc(100vw - env(titlebar-area-width, 100vw) + 12px));
+}
+html.programa .topbar button,
+html.programa .topbar input,
+html.programa .topbar select,
+html.programa .topbar a,
+html.programa .topbar .direita,
+html.programa .topbar .direita *,
+html.programa .topbar .painel-configuracao,
+html.programa .topbar .painel-configuracao * {
+  -webkit-app-region: no-drag;
 }

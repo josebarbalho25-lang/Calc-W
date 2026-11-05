@@ -1,0 +1,276 @@
+[
+ {
+  "nome": "01-U-203x17-tela",
+  "entrada": {
+   "perfil": "U 203,2 x 17,1",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 50,
+    "Mx": 1500,
+    "My": -200,
+    "Vx": 5,
+    "Vy": 20
+   },
+   "comprimentos": {
+    "Lx": 300,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "02-U-203x17-janela-My",
+  "janela": "My",
+  "entrada": {
+   "perfil": "U 203,2 x 17,1",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 50,
+    "Mx": 1500,
+    "My": -200,
+    "Vx": 5,
+    "Vy": 20
+   },
+   "comprimentos": {
+    "Lx": 300,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "03-U-381x50-flexotorcao",
+  "entrada": {
+   "perfil": "U 381,0 x 50,4",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 900,
+    "Mx": 0,
+    "My": 0,
+    "Vx": 0,
+    "Vy": 0
+   },
+   "comprimentos": {
+    "Lx": 400,
+    "Ly": 100,
+    "Lt": 400,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "04-I-203x30-tela",
+  "entrada": {
+   "perfil": "I 203,2 x 30,5",
+   "aco": "ASTM A36",
+   "esforcos": {
+    "N": 100,
+    "Mx": 3000,
+    "My": 200,
+    "Vx": 5,
+    "Vy": 30
+   },
+   "comprimentos": {
+    "Lx": 300,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "05-L-3x3-centroide",
+  "entrada": {
+   "perfil": "L 3\" x 3\" - 6,35",
+   "aco": "ASTM A36",
+   "esforcos": {
+    "N": 80,
+    "Mx": 0,
+    "My": 0,
+    "Vx": 0,
+    "Vy": 0
+   },
+   "comprimentos": {
+    "Lx": 150,
+    "Ly": 150,
+    "Lt": 150,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "06-L-4x3-trelica-espacial",
+  "entrada": {
+   "perfil": "L 4\" x 3\" - 9,52",
+   "aco": "ASTM A36",
+   "esforcos": {
+    "N": 120,
+    "Mx": 0,
+    "My": 0,
+    "Vx": 0,
+    "Vy": 0
+   },
+   "comprimentos": {
+    "Lx": 200,
+    "Ly": 200,
+    "Lt": 200,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": {
+    "aba": "menor",
+    "trelica": "espacial"
+   }
+  }
+ },
+ {
+  "nome": "07-L-3x3-flexao-F10",
+  "entrada": {
+   "perfil": "L 3\" x 3\" - 6,35",
+   "aco": "ASTM A36",
+   "esforcos": {
+    "N": 40,
+    "Mx": 2500,
+    "My": 0,
+    "Vx": 0,
+    "Vy": 15
+   },
+   "comprimentos": {
+    "Lx": 150,
+    "Ly": 150,
+    "Lt": 150,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "08-U-memoria",
+  "janela": "memoria",
+  "entrada": {
+   "perfil": "U 203,2 x 17,1",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 50,
+    "Mx": 1500,
+    "My": -200,
+    "Vx": 5,
+    "Vy": 20
+   },
+   "comprimentos": {
+    "Lx": 300,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "09-tema-claro",
+  "tema": "modern",
+  "entrada": {
+   "perfil": "U 203,2 x 17,1",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 50,
+    "Mx": 1500,
+    "My": -200,
+    "Vx": 5,
+    "Vy": 20
+   },
+   "comprimentos": {
+    "Lx": 300,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "10-tema-papel",
+  "tema": "paper",
+  "entrada": {
+   "perfil": "U 203,2 x 17,1",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 50,
+    "Mx": 1500,
+    "My": -200,
+    "Vx": 5,
+    "Vy": 20
+   },
+   "comprimentos": {
+    "Lx": 300,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "11-tema-papel-janela-Mx",
+  "tema": "paper",
+  "janela": "Mx",
+  "entrada": {
+   "perfil": "U 203,2 x 17,1",
+   "aco": "ASTM A572 GR50",
+   "esforcos": {
+    "N": 50,
+    "Mx": 1500,
+    "My": -200,
+    "Vx": 5,
+    "Vy": 20
+   },
+   "comprimentos": {
+    "Lx": 300,
+    "Ly": 300,
+    "Lt": 300,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ },
+ {
+  "nome": "12-L-3x3-memoria-F10",
+  "janela": "memoria",
+  "entrada": {
+   "perfil": "L 3\" x 3\" - 6,35",
+   "aco": "ASTM A36",
+   "esforcos": {
+    "N": 40,
+    "Mx": 2500,
+    "My": 0,
+    "Vx": 0,
+    "Vy": 15
+   },
+   "comprimentos": {
+    "Lx": 150,
+    "Ly": 150,
+    "Lt": 150,
+    "Cb": 1,
+    "a": 0
+   },
+   "ligacao": null
+  }
+ }
+]

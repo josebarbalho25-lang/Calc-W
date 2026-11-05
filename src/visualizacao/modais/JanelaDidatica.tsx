@@ -100,7 +100,11 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
     return () => window.removeEventListener('keydown', tecla);
   }, [fechar]);
 
-  const h = r.secao.h;
+  // Na cantoneira não há alma (nem a janela do a, que some na entrada).
+  const h = r.secao.familia === 'L' ? 0 : r.secao.h;
+  // Na cantoneira não há alma (sem a aba "a"); na de treliça, nem FLT nem Cb.
+  const comprimentos: ChaveDaAjuda[] = r.secao.familia !== 'L' ? COMPRIMENTOS : r.entrada.ligacao ? ['Lx'] : ['Lx', 'Ly', 'Lt', 'Cb'];
+  const ou = (x: number | undefined, casas: number) => (x !== undefined && Number.isFinite(x) ? num(x, casas) : '—');
   const aSobreH = comEnrij ? (L.a > 0 ? L.a / h : 1.5) : undefined;
 
   let palco: ReactNode;
@@ -132,27 +136,27 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
     } else if (chave === 'Mx' || chave === 'My') {
       const emX = chave === 'Mx';
       const e = emX ? 'x' : 'y';
-      const MRd = emX ? r.flexaoX.MRd : r.flexaoY.MRd;
+      const MRd = (emX ? r.flexaoX?.MRd : r.flexaoY?.MRd) ?? NaN;
       const MSd = emX ? f.Mx : f.My;
       dados = (
         <>
           <Dado rotulo={s('M', `${e},Sd`)} valor={num(MSd, 1)} unidade="kN·cm" />
           <Dado rotulo={s('I', e)} valor={num(emX ? p.Ix : p.Iy, 0)} unidade="cm⁴" />
-          <Dado rotulo={s('M', `${e},Rd`)} valor={num(MRd, 1)} unidade="kN·cm" />
-          <Dado rotulo={<>{s('M', `${e},Sd`)}/{s('M', `${e},Rd`)}</>} valor={razao(MSd, MRd)} />
+          <Dado rotulo={s('M', `${e},Rd`)} valor={ou(MRd, 1)} unidade="kN·cm" />
+          <Dado rotulo={<>{s('M', `${e},Sd`)}/{s('M', `${e},Rd`)}</>} valor={Number.isFinite(MRd) ? razao(MSd, MRd) : '—'} />
         </>
       );
     } else {
       const emY = chave === 'Vy';
       const e = emY ? 'y' : 'x';
-      const c = emY ? r.cortanteY.chapa : r.cortanteX.chapa;
+      const c = emY ? r.cortanteY?.chapa : r.cortanteX?.chapa;
       const VSd = emY ? f.Vy : f.Vx;
       dados = (
         <>
           <Dado rotulo={s('V', `${e},Sd`)} valor={num(VSd, 2)} unidade="kN" />
-          <Dado rotulo={s('A', 'w')} valor={num(c.Aw, 2)} unidade="cm²" />
-          <Dado rotulo={s('V', `${e},Rd`)} valor={num(c.VRd, 1)} unidade="kN" />
-          <Dado rotulo={<>{s('V', `${e},Sd`)}/{s('V', `${e},Rd`)}</>} valor={razao(VSd, c.VRd)} />
+          <Dado rotulo={s('A', 'w')} valor={ou(c?.Aw, 2)} unidade="cm²" />
+          <Dado rotulo={s('V', `${e},Rd`)} valor={ou(c?.VRd, 1)} unidade="kN" />
+          <Dado rotulo={<>{s('V', `${e},Sd`)}/{s('V', `${e},Rd`)}</>} valor={c ? razao(VSd, c.VRd) : '—'} />
         </>
       );
     }
@@ -171,18 +175,40 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
         mudar={setOndasPilar}
       />
     );
-    dados = (
+    // Na cantoneira os números são os da conta: eixos principais u e v (ou o
+    // comprimento equivalente da treliça), não o rx e o ry da tabela.
+    const g = r.compressao.global;
+    const sl = r.secao.familia === 'L' ? r.secao : undefined;
+    dados = g.trelica ? (
+      <>
+        <Dado rotulo={s('L', 'x1')} valor={numExato(g.trelica.Lx1, 1)} unidade="cm" />
+        <Dado rotulo={s('r', 'x1')} valor={numExato(g.trelica.rx1, 2)} unidade="cm" />
+        <Dado rotulo={s('L', 'x1,eq')} valor={numExato(g.trelica.Lx1eq, 1)} unidade="cm" />
+        <Dado rotulo={s('N', 'ex1')} valor={num(g.trelica.Nex1, 1)} unidade="kN" />
+        <Dado rotulo={s('N', 'e')} valor={num(r.compressao.Ne, 1)} unidade="kN" />
+      </>
+    ) : g.principais && sl ? (
+      <>
+        <Dado rotulo={s('L', 'u')} valor={numExato(g.principais.KLu, 1)} unidade="cm" />
+        <Dado rotulo={<>λ = {s('L', 'u')}/{s('r', 'u')}</>} valor={g.principais.KLu > 0 ? num(g.principais.KLu / sl.ru, 1) : '—'} />
+        <Dado rotulo={s('N', 'eu')} valor={ou(g.principais.Neu, 1)} unidade="kN" />
+        <Dado rotulo={s('L', 'v')} valor={numExato(g.principais.KLv, 1)} unidade="cm" />
+        <Dado rotulo={<>λ = {s('L', 'v')}/{s('r', 'v')}</>} valor={g.principais.KLv > 0 ? num(g.principais.KLv / sl.rv, 1) : '—'} />
+        <Dado rotulo={s('N', 'ev')} valor={ou(g.principais.Nev, 1)} unidade="kN" />
+        <Dado rotulo={s('N', 'e')} valor={num(r.compressao.Ne, 1)} unidade="kN" />
+      </>
+    ) : (
       <>
         <Dado rotulo={s('L', eixo)} valor={numExato(LL, 1)} unidade="cm" />
         <Dado rotulo={s('r', eixo)} valor={numExato(rr, 2)} unidade="cm" />
         <Dado rotulo={<>λ = {s('L', eixo)}/{s('r', eixo)}</>} valor={LL > 0 ? num(LL / rr, 1) : '—'} />
-        <Dado rotulo={s('N', `e${eixo}`)} valor={num(eixo === 'x' ? r.compressao.Nex : r.compressao.Ney, 1)} unidade="kN" />
+        <Dado rotulo={s('N', `e${eixo}`)} valor={ou(eixo === 'x' ? r.compressao.Nex : r.compressao.Ney, 1)} unidade="kN" />
         <Dado rotulo={s('N', 'e')} valor={num(r.compressao.Ne, 1)} unidade="kN" />
       </>
     );
   } else if (chave === 'Lt') {
-    const f = r.flexaoX.flt;
-    palco = <CenaFlambagem3D key={chave} perfil={p} modo="flt" ondas={ondasViga} rotulo="Lb" />;
+    const f = r.flexaoX?.flt;
+    palco = <CenaFlambagem3D key={chave} perfil={p} modo="flt" ondas={ondasViga} rotulo="Lb" mesa={r.flexaoX?.mesaComprimida} />;
     controles = (
       <Seg
         opcoes={[
@@ -197,12 +223,23 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
     dados = (
       <>
         <Dado rotulo={<>{s('L', 't')} = {s('L', 'b')}</>} valor={numExato(L.Lt, 1)} unidade="cm" />
-        <Dado rotulo={s('C', 'b')} valor={numExato(L.Cb, 3)} />
-        <Dado rotulo={s('M', 'cr')} valor={num(f.Mcr, 0)} unidade="kN·cm" />
-        <Dado rotulo={<>λ = {s('L', 'b')}/{s('r', 'y')}</>} valor={num(f.classico.lambda, 1)} />
-        <Dado rotulo={s('λ', 'LT')} valor={num(f.alternativo.lambdaLT, 3)} />
-        <Dado rotulo={<>{s('M', 'Rk')} clássico</>} valor={num(f.classico.Mrk, 0)} unidade="kN·cm" />
-        <Dado rotulo={<>{s('M', 'Rk')} χ<sub>FLT</sub></>} valor={num(f.alternativo.Mrk, 0)} unidade="kN·cm" />
+        {f && (
+          <>
+            {/* O Cb que a conta usou (com o Rm na curvatura reversa). */}
+            <Dado rotulo={s('C', 'b')} valor={numExato(f.Cb, 3)} />
+            <Dado rotulo={s('M', 'cr')} valor={num(f.Mcr, 0)} unidade="kN·cm" />
+            <Dado rotulo={<>λ = {s('L', 'b')}/{s('r', f.indiceDoRaio ?? 'y')}</>} valor={num(f.classico.lambda, 1)} />
+            {/* O Anexo E não tem o caminho do χFLT. */}
+            {f.indiceDoRaio !== 'yc' && (
+              <>
+                <Dado rotulo={s('λ', 'LT')} valor={num(f.alternativo.lambdaLT, 3)} />
+                <Dado rotulo={<>{s('M', 'Rk')} clássico</>} valor={num(f.classico.Mrk, 0)} unidade="kN·cm" />
+                <Dado rotulo={<>{s('M', 'Rk')} χ<sub>FLT</sub></>} valor={num(f.alternativo.Mrk, 0)} unidade="kN·cm" />
+              </>
+            )}
+            {f.indiceDoRaio === 'yc' && <Dado rotulo={s('M', 'Rk')} valor={num(f.classico.Mrk, 0)} unidade="kN·cm" />}
+          </>
+        )}
         <Dado rotulo={s('N', 'ez')} valor={num(r.compressao.Nez, 1)} unidade="kN" />
       </>
     );
@@ -256,8 +293,9 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
             </div>
           </div>
         )}
-        {/* O Rm é da fórmula da alínea a); no balanço ela não entra. */}
-        {forma !== 'balanco' && <Dado rotulo={s('R', 'm')} valor="1,00" />}
+        {/* O Cb daqui é o do 5.4.2.3 SEM o Rm (decisão dele): o Rm só existe na
+            curvatura reversa do I de mesas diferentes, e o motor o aplica. */}
+        {r.flexaoX?.Rm !== undefined && r.flexaoX.Rm !== 1 && <Dado rotulo={<>{s('R', 'm')} na verificação</>} valor={num(r.flexaoX.Rm, 3)} />}
         <Dado rotulo={s('C', 'b')} valor={num(cb.Cb, 3)} />
         <Dado rotulo={<>{s('C', 'b')} na verificação</>} valor={numExato(L.Cb, 3)} />
         <div className="acoes">
@@ -268,7 +306,7 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
       </>
     );
   } else {
-    const c = r.cortanteY.chapa;
+    const c = r.cortanteY!.chapa;
     palco = <PainelCisalhamento aSobreH={aSobreH} />;
     controles = (
       <Seg
@@ -283,7 +321,7 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
     dados = (
       <>
         <Dado rotulo={<i>h = d'</i>} valor={numExato(h * 10, 1)} unidade="mm" />
-        <Dado rotulo={s('t', 'w')} valor={numExato(p.tw, 1)} unidade="mm" />
+        <Dado rotulo={s('t', 'w')} valor={numExato(p.familia === 'L' ? p.t : p.tw, 1)} unidade="mm" />
         <Dado rotulo={<i>a</i>} valor={L.a > 0 ? numExato(L.a, 1) : '—'} unidade="cm" />
         {/* Os números são os da VERIFICAÇÃO (a da entrada). Sem enrijecedor na
             entrada, o desenho "com enrijecedores" usa a/h = 1,5 só para mostrar. */}
@@ -301,7 +339,7 @@ export default function JanelaDidatica({ chave, trocar, fechar, resultado, usarC
       <div className="modal-caixa janela-didatica" role="dialog" aria-label={TITULO[chave]}>
         <div className="modal-cabeca">
           <h3>{TITULO[chave]}</h3>
-          <Seg opcoes={(eEsforco(chave) ? ESFORCOS : COMPRIMENTOS).map((a) => [a, a] as [ChaveDaAjuda, string])} valor={chave} mudar={trocar} />
+          <Seg opcoes={(eEsforco(chave) ? ESFORCOS : comprimentos).map((a) => [a, a] as [ChaveDaAjuda, string])} valor={chave} mudar={trocar} />
           <button type="button" className="btn-icone" onClick={fechar} aria-label="Fechar" title="Fechar (Esc)">
             ✕
           </button>

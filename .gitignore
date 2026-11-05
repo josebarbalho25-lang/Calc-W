@@ -3,3 +3,6 @@ dist/
 .vite/
 *.local
 .termo-aceito
+
+# O instalador gerado (npm run instalador): ~120 MB, nunca no git.
+instalador/saida/

@@ -31,9 +31,17 @@ export interface ResultadoFlt {
   Mrk: number;
   adotado: 'clássico' | 'alternativo';
   passos: Passo[];
+  /** O índice do raio do λ = Lb/r: 'y' (I e U), 'yTc' (mesas diferentes), 'yc' (Anexo E). */
+  indiceDoRaio?: string;
 }
 
-export function flambagemLateralComTorcao(s: SecaoI, fy: number, Lb: number, Cb: number, Mpl: number): ResultadoFlt {
+export function flambagemLateralComTorcao(
+  s: Pick<SecaoI, 'Wx' | 'J' | 'Iy' | 'ry' | 'Cw'>,
+  fy: number,
+  Lb: number,
+  Cb: number,
+  Mpl: number,
+): ResultadoFlt {
   const sigmaR = 0.3 * fy;
   const Mr = (fy - sigmaR) * s.Wx;
   const beta1 = ((fy - sigmaR) * s.Wx) / (E * s.J);
